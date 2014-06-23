@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "twit": "1.1.15",
+    "jquery": "2.1.1",
+    "express": "latest",
+    "request": "latest",
+    "cheerio": "latest",
+    "underscore": "latest"
+  }
+}
