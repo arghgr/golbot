@@ -17,9 +17,9 @@ var scorefetcher = require("./scorefetcher");
 // var ping_interval = 1000 * 60; // Check for matches every hour
 
 // Test values:
-var scoreCheck_freq = 1000;
-var match_length = 1000 * 10;
-var ping_interval = 1000 * 5;
+var scoreCheck_freq = 1000 * 10;
+var match_length = 1000 * 60 * 2.5;
+var ping_interval = 1000 * 30;
 
 // Scraper
 var scraper = null;
@@ -70,7 +70,7 @@ var getMatches = function(file) {
   var checkMatchTimes = function(matchesData) {
     var datetime = new Date();
     var date = datetime.toJSON().substr(0,10);
-    var hour = parseInt(datetime.toJSON().substr(11,13), 10);
+    var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - 3;
     console.log("date: " + date);
     console.log("hour: " + hour);
     if (matchesData.length > 0) {
@@ -103,10 +103,10 @@ var getMatches = function(file) {
 var checkIfMatch = function(file) {
   console.log("checking for scraping in progress");
   if (!scraper) {
-    console.log("no scraping in progress");
+    console.log("no scraping in progress - checking matches");
     if (file) { getMatches(file); } else { getMatches(); }
   } else {
-    console.log("scraping in progress");
+    console.log("scraping already in progress");
   }
 };
 
@@ -115,11 +115,11 @@ var testFile2 = path.join(__dirname + '/test_files/examplex_currenty.json');
 
 // RUN WITH TEST DATA AND SCRAPE SPEEDS
 // getMatches(testFile2);
-var test = setInterval(function() {
-  checkIfMatch();
-}, ping_interval);
+// var test = setInterval(function() {
+//   checkIfMatch(testFile2);
+// }, ping_interval);
 
 // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
-// var production = setInterval(function() {
-//   checkIfMatch();
-// }, ping_interval);
+var production = setInterval(function() {
+  checkIfMatch();
+}, ping_interval);

@@ -201,7 +201,7 @@ var checkIfNewGol = function(match) {
           awayGol_event = gol_event;
           match.lastGolEvent_away = gol_event;
         }
-      } else if (_.isEqual(gol_event, lastGolEvent)) {
+      } else if (_.isEqual(gol_event, lastGolEvent) && lastGolEvent != null) {
         console.log("gol_event = lastGolEvent?!");
         console.log(lastGolEvent);
       } else {
