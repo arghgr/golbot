@@ -23,12 +23,18 @@ var getMatches = function(file) {
       }
     }, function(error, response, data){
       if(!error){
-        console.log(response);
+        // console.log(response);
         var $ = cheerio.load(data);
         var matches = JSON.parse(data);
+        console.log(matches);
+        var time = new Date();
+        console.log(time.toJSON());
+        console.log(time.getTimezoneOffset());
       } else {
         console.log(error);
       }
     });
   }
 };
+
+getMatches();

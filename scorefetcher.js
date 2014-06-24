@@ -7,54 +7,88 @@ var _ = require('underscore');
 
 var tweeter = require("./tweeter");
 
-var lastMatchData = null; // Assuming JSON is in an array with one object
-var currentMatchData = null; // Assuming JSON is in an array with one object
+var matches = [];
 
-var lastGolEvent_home = null;
-var lastGolEvent_away = null;
-
-var resetValues = function() {
-  lastMatchData = null;
-  currentMatchData = null;
-  lastGolEvent_home = null;
-  lastGolEvent_away = null;
-  console.log("reset values");
+function Match(matchData) {
+  this.match_number = matchData.match_number;
+  this.lastMatchData = null;
+  this.currentMatchData = matchData;
+  this.lastGolEvent_home = null;
+  this.lastGolEvent_away = null;
 }
 
 var scrapeCurrent = function(file, callback) {
+  var matchesData = null;
   if (file) {
     // read in test file:
     fs.readFile(file, { encoding: "utf-8" }, function(error, data) {
       if(!error){
         var $ = cheerio.load(data);
-        currentMatchData = JSON.parse(data)[0];
-        parseData();
+        matchesData = JSON.parse(data);
+        console.log("\n%%%%%%%%%%% PARSING MATCHES DATA %%%%%%%%%%%");
+        parseMatches(matchesData);
+        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
       } else {
         console.log(error);
       }
     });
   } else {
     request({
-      url: "http://worldcup.sfg.io/matches/current",
+      url: "http://worldcup.sfg.io/matches/today",
       headers: {
         "User-Agent": "worldcupgolbot by @arghgr"
       }
     }, function(error, response, data){
       if(!error){
-        console.log(response);
         var $ = cheerio.load(data);
-        currentMatchData = JSON.parse(data)[0];
-        parseData();
+        matchesData = JSON.parse(data);
+        console.log("%%%%%%%%%%% PARSING MATCHES DATA %%%%%%%%%%%");
+        parseMatches(matchesData);
+        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
       } else {
         console.log(error);
       }
     });
   }
 
-  var parseData = function() {
+  var parseMatches = function(matchesData) {
+    if (matchesData.length > 0) {
+      matchesData.forEach(function(matchData) {
+        var matchExists = null;
+        for (i = 0; i < matches.length; i++) {
+          if (matchData.match_number == matches[i].match_number) {
+            matchExists = i;
+            console.log("\nfound match_number " + matchData.match_number + " in matches[" + matchExists + "]");
+            break;
+          }
+        }
+        if (matchExists == null) {
+          console.log("\nadded match #" + matchData.match_number + " to matches");
+          var match = new Match(matchData);
+          matches.push(match);
+          parseData(match);
+        } else {
+          console.log("updating matches[" + matchExists + "], which is match #" + matchData.match_number);
+          var match = matches[matchExists];
+          match.lastMatchData = match.currentMatchData;
+          match.currentMatchData = matchData;
+          parseData(match);
+        }
+      });
+    } else {
+      console.log("no matches in progress\nresetting values");
+      matches = [];
+    }
+    if (callback) { callback(); }
+  };
+
+  var parseData = function(match) {
+    var currentMatchData = match.currentMatchData;
+    var lastMatchData = match.lastMatchData;
+
     var gol_check = true;
     if (currentMatchData) {
-      console.log("\n\n***************************");
+      console.log("***************************");
       console.log(currentMatchData.match_number + " (" + currentMatchData.status + ")" );
       console.log(currentMatchData.home_team.code + " : "
         + currentMatchData.home_team.goals);
@@ -63,21 +97,18 @@ var scrapeCurrent = function(file, callback) {
       console.log("***************************");
       if (lastMatchData) {
         if (currentMatchData.match_number == lastMatchData.match_number) {
-          gol_check = checkIfNewGol();
+          gol_check = checkIfNewGol(match);
         } else {
           console.log("current match_number != last match_number");
         }
+      } else {
+        console.log("no lastMatchData for #" + currentMatchData.match_number);
       }
       if (gol_check) {
-        lastMatchData = currentMatchData;
+        match.lastMatchData = match.currentMatchData;
       } else {
-        console.log("scrape: gol_check senses something fishy");
+        console.log("scrape: gol_check senses something fishy. not updating lastMatchData for now");
       }
-      if (callback) { callback(); }
-      return currentMatchData;
-    } else {
-      console.log("no matches in progress");
-      resetValues();
     }
     return;
   };
@@ -126,12 +157,12 @@ var searchGolEvent = function(match, team) {
   }
 };
 
-var checkIfNewGol = function() {
+var checkIfNewGol = function(match) {
   console.log("++++++++++++++++++++++++++");
   console.log("GOL CHECK:");
 
-  var home = currentMatchData.home_team;
-  var away = currentMatchData.away_team;
+  var home = match.currentMatchData.home_team;
+  var away = match.currentMatchData.away_team;
 
   var homeGol = null;
   var awayGol = null;
@@ -144,13 +175,13 @@ var checkIfNewGol = function() {
     var gol = null;
     var lastGolEvent = null;
     if (team == "home") {
-      last = lastMatchData.home_team;
+      last = match.lastMatchData.home_team;
       current = home;
-      lastGolEvent = lastGolEvent_home;
+      lastGolEvent = match.lastGolEvent_home;
     } else if (team == "away") {
-      last = lastMatchData.away_team;
+      last = match.lastMatchData.away_team;
       current = away;
-      lastGolEvent = lastGolEvent_away;
+      lastGolEvent = match.lastGolEvent_away;
     } else {
       console.log("no team specified");
     }
@@ -159,16 +190,16 @@ var checkIfNewGol = function() {
 
     if (last && current && last.goals < current.goals) {
       gol = true;
-      var gol_event = searchGolEvent(currentMatchData, team);
+      var gol_event = searchGolEvent(match.currentMatchData, team);
       if (gol_event != null && !_.isEqual(gol_event, lastGolEvent)) {
         if (team == "home") {
           homeGol = gol;
           homeGol_event = gol_event;
-          lastGolEvent_home = gol_event;
+          match.lastGolEvent_home = gol_event;
         } else if (team == "away") {
           awayGol = gol;
           awayGol_event = gol_event;
-          lastGolEvent_away = gol_event;
+          match.lastGolEvent_away = gol_event;
         }
       } else if (_.isEqual(gol_event, lastGolEvent)) {
         console.log("gol_event = lastGolEvent?!");
@@ -182,12 +213,14 @@ var checkIfNewGol = function() {
   checkEvents("home");
   checkEvents("away");
 
+  // Checks whether gol is detected and is accompanied by gol event
   // Tweet if gol; tweet earlier gol first if both home and away
+  // If checkIfGol returns false, lastMatchData won't be replaced w/ currentMatchData
+  // (so curentMatchData can run again and properly get gol event when it exists)
   if (homeGol && awayGol) {
     if (homeGol_event && awayGol_event) {
-      console.log("2 goals at once? comparing times:");
-      console.log(homeGol_event.time);
-      console.log(awayGol_event.time);
+      console.log("2 gols at once? comparing times: home " + homeGol_event.time + " vs away " +
+        awayGol_event.time);
       if (homeGol_event.time > awayGol_event.time) {
         tweeter.golTweet(away.code, awayGol_event);
         tweeter.golTweet(home.code, homeGol_event);
@@ -195,20 +228,23 @@ var checkIfNewGol = function() {
         tweeter.golTweet(home.code, homeGol_event);
         tweeter.golTweet(away.code, awayGol_event);
       }
+      console.log("2 gols detected");
+      console.log("++++++++++++++++++++++++++");
+      return true;
     } else {
-      console.log("hah?");
+      console.log("2 gols detected, but not both gol events");
+      console.log("++++++++++++++++++++++++++");
+      return false;
     }
   } else if (homeGol || awayGol) {
-    if (homeGol && homeGol_event) { tweeter.golTweet(home.code, homeGol_event); }
-    if (awayGol && awayGol_event) { tweeter.golTweet(away.code, awayGol_event); }
-  }
-
-  // Checks whether gol is detected and is accompanied by gol event
-  // if checkIfGol returns false, lastMatchData won't be replaced w/ currentMatchData
-  // (so curentMatchData can run again and properly get gol event when it exists)
-  if (homeGol || awayGol) {
-    if ((homeGol && homeGol_event) || (awayGol && awayGol_event)) {
-      console.log("gol detected");
+    if (homeGol && homeGol_event) {
+      tweeter.golTweet(home.code, homeGol_event);
+      console.log("home gol detected");
+      console.log("++++++++++++++++++++++++++");
+      return true;
+    } else if (awayGol && awayGol_event) {
+      tweeter.golTweet(away.code, awayGol_event);
+      console.log("away gol detected");
       console.log("++++++++++++++++++++++++++");
       return true;
     } else {
@@ -223,21 +259,20 @@ var checkIfNewGol = function() {
   }
 };
 
+var testFile_x = path.join(__dirname + '/test_files/example5_current1.json');
+var testFile_y = path.join(__dirname + '/test_files/example5_current3.json');
+var testFile_z = path.join(__dirname + '/test_files/example5_current5.json');
 var runTestFiles = function() {
-  var testFile_x = path.join(__dirname + '/test_files/example0_current1.json');
-  var testFile_y = path.join(__dirname + '/test_files/example0_current2.json');
-  var testFile_z = path.join(__dirname + '/test_files/example0_current3.json');
   scrapeCurrent(testFile_x, function() {
     scrapeCurrent(testFile_y, function() {
-      scrapeCurrent(testFile_z, function() {
-        console.log("***********aaaaaa what***************");
-      });
+      scrapeCurrent(testFile_z);
     });
   });
 };
 
 // RUN WITH TEST FILES:
-runTestFiles();
+// runTestFiles();
+// scrapeCurrent(testFile_y);
 
 // RUN WITH TEST SCRAPER:
 // setInterval(scrapeCurrent, 5000);
