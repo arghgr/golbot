@@ -1,11 +1,15 @@
-var express = require('express');
-var fs = require('fs');
-var path = require('path');
-var request = require('request');
-var cheerio = require('cheerio');
-var _ = require('underscore');
+var express = require("express");
+var fs = require("fs");
+var path = require("path");
+var request = require("request");
+var cheerio = require("cheerio");
+var _ = require("underscore");
 
 var tweeter = require("./tweeter");
+
+// SCORE FETCHER
+// Fetches score data and checks whether a goal has been scored
+// If goal has been scored, runs tweeter
 
 var matches = [];
 
@@ -25,9 +29,7 @@ var scrapeCurrent = function(file, callback) {
       if(!error){
         var $ = cheerio.load(data);
         matchesData = JSON.parse(data);
-        console.log("\n%%%%%%%%%%% PARSING MATCHES DATA %%%%%%%%%%%");
         parseMatches(matchesData);
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
       } else {
         console.log(error);
       }
@@ -42,9 +44,7 @@ var scrapeCurrent = function(file, callback) {
       if(!error){
         var $ = cheerio.load(data);
         matchesData = JSON.parse(data);
-        console.log("%%%%%%%%%%% PARSING MATCHES DATA %%%%%%%%%%%");
         parseMatches(matchesData);
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
       } else {
         console.log(error);
       }
@@ -279,3 +279,5 @@ var runTestFiles = function() {
 
 // RUN AT PRODUCTION SCRAPER SPEED:
 // setInterval(scrapeCurrent, 10 * 1000);
+
+exports.scrapeCurrent = scrapeCurrent;

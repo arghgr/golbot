@@ -1,4 +1,17 @@
 {
+ "name": "@worldcupgolbot",
+  "description": "world cup gol tweeter",
+  "version": "0.0.1",
+  "author": "@arghgr",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blanckien/worldcupgolbot"
+  },
+  "engines": {
+    "node": "0.10.22",
+    "npm": "1.1.x"
+  },
   "dependencies": {
     "twit": "1.1.15",
     "jquery": "2.1.1",
