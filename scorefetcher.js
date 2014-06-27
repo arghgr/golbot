@@ -144,7 +144,8 @@ var searchGolEvent = function(match, team) {
   }
 
   if (lastEvent) {
-    if (lastEvent.type_of_event == "goal") {
+    var eventType = lastEvent.type_of_event;
+    if (eventType == "goal" || eventType == "goal-penalty") {
       console.log("########################################");
       return lastEvent;
     } else {

@@ -20,15 +20,15 @@ var golTweet = function(team_code, gol_event) {
   var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + gol_event.time;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
-  console.log("Posting Tweet");
-  var statusUpdate = tweet;
-  T.post('statuses/update', { status: statusUpdate }, function(err, reply) {
-      if (err) {
-          console.dir(err);
-      } else {
-          console.dir(reply);
-      }
-  });
+  // console.log("Posting Tweet");
+  // var statusUpdate = tweet;
+  // T.post('statuses/update', { status: statusUpdate }, function(err, reply) {
+  //     if (err) {
+  //         console.dir(err);
+  //     } else {
+  //         console.dir(reply);
+  //     }
+  // });
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 
