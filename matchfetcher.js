@@ -120,6 +120,9 @@ if (isProduction == true) {
   var ping_interval = 1000 * 60; // Check time every minute
 
   console.log("isProduction? " + isProduction);
+  console.log("scoreCheck_freq: " + scoreCheck_freq);
+  console.log("match_length: " + match_length);
+  console.log("ping_interval: " + ping_interval);
   var production = setInterval(function() {
     checkIfMatch();
   }, ping_interval);
