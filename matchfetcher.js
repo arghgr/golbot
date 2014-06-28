@@ -93,12 +93,18 @@ var getMatches = function(file) {
 };
 
 var checkIfMatch = function(file) {
-  console.log("checking for scraping in progress");
-  if (!scraper) {
-    console.log("no scraping in progress - checking matches");
-    if (file) { getMatches(file); } else { getMatches(); }
-  } else {
-    console.log("scraping already in progress");
+  var datetime = new Date();
+  var minutes = datetime.getMinutes();
+  console.log("minutes: " + minutes);
+  // Checks for matches in the last five minutes and first ten minutes of every hour
+  if (minutes >= 55 || minutes <= 10) {
+    console.log("checking for scraping in progress");
+    if (!scraper) {
+      console.log("no scraping in progress - checking matches");
+      if (file) { getMatches(file); } else { getMatches(); }
+    } else {
+      console.log("scraping already in progress");
+    }
   }
 };
 
@@ -109,9 +115,9 @@ var isProduction = process.env.IS_PRODUCTION;
 
 if (isProduction == true) {
   // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
-  var scoreCheck_freq = 1000 * 10; // Scrape every thirty seconds
+  var scoreCheck_freq = 1000 * 10; // Scrape every ten seconds
   var match_length = 1000 * 60 * 60 * 2.5; // Keep scraper running for 2.5 hours
-  var ping_interval = 1000 * 60 * 2; // Check for matches twice every hour
+  var ping_interval = 1000 * 60; // Check time every minute
 
   var production = setInterval(function() {
     checkIfMatch();
@@ -122,7 +128,7 @@ if (isProduction == true) {
   var match_length = 1000 * 30;
   var ping_interval = 1000 * 10;
 
-  getMatches(testFile1);
+  // getMatches(testFile1);
   var test = setInterval(function() {
     checkIfMatch(testFile1);
   }, ping_interval);
