@@ -145,13 +145,25 @@ var searchGolEvent = function(match, team) {
 
   if (lastEvent) {
     var eventType = lastEvent.type_of_event;
-    if (eventType == "goal" || eventType == "goal-penalty") {
-      console.log("########################################");
-      return lastEvent;
+    var eventString = eventType.substring(0, 4);
+    if (eventString) {
+      if (eventString == "goal") {
+        console.log("########################################");
+        return lastEvent;
+      } else {
+        console.log("gol not found");
+        console.log("????????????????????????????????????????");
+        return null;
+      }
     } else {
-      console.log("gol not found");
-      console.log("????????????????????????????????????????");
-      return null;
+      if (eventType == "goal" || eventType == "goal-penalty") {
+        console.log("########################################");
+        return lastEvent;
+      } else {
+        console.log("gol not found??");
+        console.log("????????????????????????????????????????");
+        return null;
+      }
     }
   } else {
     console.log("search: no lastEvent?");
@@ -261,8 +273,8 @@ var checkIfNewGol = function(match) {
 };
 
 var testFile_x = path.join(__dirname + '/test_files/example5_current1.json');
-var testFile_y = path.join(__dirname + '/test_files/example5_current3.json');
-var testFile_z = path.join(__dirname + '/test_files/example5_current5.json');
+var testFile_y = path.join(__dirname + '/test_files/example5_current2.json');
+var testFile_z = path.join(__dirname + '/test_files/example5_current3.json');
 var runTestFiles = function() {
   scrapeCurrent(testFile_x, function() {
     scrapeCurrent(testFile_y, function() {
@@ -272,7 +284,7 @@ var runTestFiles = function() {
 };
 
 // RUN WITH TEST FILES:
-// runTestFiles();
+runTestFiles();
 // scrapeCurrent(testFile_y);
 
 // RUN WITH TEST SCRAPER:

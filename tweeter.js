@@ -13,22 +13,29 @@ var T = new twit({
   access_token_secret: process.env.GB_TOKEN_SECRET
 });
 
+var postTweet = function(tweet) {
+  console.log("Posting Tweet");
+  var statusUpdate = tweet;
+  T.post("statuses/update", { status: statusUpdate }, function(err, reply) {
+      if (err) {
+          console.dir(err);
+      } else {
+          console.dir(reply);
+      }
+  });
+};
+
 var golTweet = function(team_code, gol_event) {
   var o_number = o.oCalc(team_code);
-  // var o_number = 10;
-  var gol = "G" + Array(o_number).join("O") + "L";
+  if (o_number) {
+    var gol = "G" + Array(o_number).join("O") + "L";
+  } else {
+    var gol = "GOL";
+  }
   var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + gol_event.time;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
-  // console.log("Posting Tweet");
-  // var statusUpdate = tweet;
-  // T.post('statuses/update', { status: statusUpdate }, function(err, reply) {
-  //     if (err) {
-  //         console.dir(err);
-  //     } else {
-  //         console.dir(reply);
-  //     }
-  // });
+  // postTweet(tweet);
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 

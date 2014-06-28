@@ -120,6 +120,6 @@ var testFile2 = path.join(__dirname + '/test_files/examplex_currenty.json');
 // }, ping_interval);
 
 // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
-var production = setInterval(function() {
-  checkIfMatch();
-}, ping_interval);
+// var production = setInterval(function() {
+//   checkIfMatch();
+// }, ping_interval);
