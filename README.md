@@ -7,4 +7,5 @@ Much thanks to:
 * http://worldcup.sfg.io/
 * http://data.worldbank.org/
 * http://www.kimonolabs.com/worldcup/explorer
+* http://thenounproject.com/term/soccer/23509/
 * https://en.wikipedia.org/wiki/2014_FIFA_World_Cup
