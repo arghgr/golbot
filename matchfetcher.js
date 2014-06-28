@@ -115,7 +115,7 @@ var isProduction = process.env.IS_PRODUCTION;
 
 if (isProduction == true) {
   // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
-  var scoreCheck_freq = 1000 * 10; // Scrape every ten seconds
+  var scoreCheck_freq = 1000 * 20; // Scrape every twenty seconds
   var match_length = 1000 * 60 * 60 * 2.5; // Keep scraper running for 2.5 hours
   var ping_interval = 1000 * 60; // Check time every minute
 
@@ -130,6 +130,6 @@ if (isProduction == true) {
 
   // getMatches(testFile1);
   var test = setInterval(function() {
-    checkIfMatch(testFile1);
+    checkIfMatch();
   }, ping_interval);
 }
