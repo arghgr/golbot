@@ -4,11 +4,20 @@ var path = require("path");
 var request = require("request");
 var _ = require("underscore");
 
+// COUNTRY DATA GENERATOR
+// Run this file to generate a JSON file of data on FIFA countries and their capital cities
+// based on their FIFA code.
+// I took data from the World Bank API and matched it to FIFA's country codes using
+// @MutualArising's World Cup API.
+// http://api.worldbank.org/countries?per_page=260&format=json
+// http://worldcup.sfg.io/teams
+
 var getMatches = function(file1, file2) {
   var countries = {};
   var teams = {};
   var matches = {};
   var nonmatches = {};
+  var finalData = {};
 
   if (file1 && file2) {
     fs.readFile(file1, { encoding: "utf-8" }, function(error, data) {
@@ -26,13 +35,17 @@ var getMatches = function(file1, file2) {
             var nameNonMatches = searchByName();
             nonmatches = searchByCode(nameNonMatches);
 
-            console.log("Final tally of matches:");
-            console.log(matches);
+            finalData = matches;
+            addManualInput("ENG", countries["GBR"]);
+
+            console.log("Final data:");
+            console.log(finalData);
             // console.log("matches size: " + _.size(matches));
 
-            console.log("Final tally of nonmatches:");
-            console.log(nonmatches);
-            // console.log("nonmatches size: " + _.size(nonmatches));
+            fs.writeFile("data_files/fifa_capitals.json", JSON.stringify(finalData), function(err) {
+              if (err) throw err;
+              console.log("Saved file to /data_files/fifa_capitals.json");
+            });
           } else {
             console.log(error);
           }
@@ -52,7 +65,7 @@ var getMatches = function(file1, file2) {
       for (var id in countries) {
         if (countries[id][0] == teams[fifa_code]) {
           match_id = countries[id][0];
-          nameMatches[id] = countries[id];
+          nameMatches[fifa_code] = countries[id];
           break;
         }
       }
@@ -84,6 +97,10 @@ var getMatches = function(file1, file2) {
 
     for (var code in codeMatches) { matches[code] = codeMatches[code]; }
     return codeNonMatches;
+  };
+
+  var addManualInput = function(fifa_code, country_info) {
+    finalData[fifa_code] = country_info;
   };
 };
 

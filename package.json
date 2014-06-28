@@ -1,5 +1,5 @@
 {
- "name": "@worldcupgolbot",
+ "name": "worldcupgolbot",
   "description": "world cup gol tweeter",
   "version": "0.0.1",
   "author": "@arghgr",
@@ -18,6 +18,7 @@
     "express": "latest",
     "request": "latest",
     "cheerio": "latest",
-    "underscore": "latest"
+    "underscore": "latest",
+    "haversine": "latest"
   }
 }
