@@ -17,11 +17,11 @@ var postTweet = function(tweet) {
   console.log("Posting Tweet");
   var statusUpdate = tweet;
   T.post("statuses/update", { status: statusUpdate }, function(err, reply) {
-      if (err) {
-          console.dir(err);
-      } else {
-          console.dir(reply);
-      }
+    if (err) {
+        console.dir(err);
+    } else {
+        console.dir(reply);
+    }
   });
 };
 
@@ -35,7 +35,8 @@ var golTweet = function(team_code, gol_event) {
   var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + gol_event.time;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
-  // postTweet(tweet);
+  var isProduction = process.env.IS_PRODUCTION;
+  if (isProduction) { postTweet(tweet); }
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 

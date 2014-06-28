@@ -232,7 +232,7 @@ var checkIfNewGol = function(match) {
   // (so curentMatchData can run again and properly get gol event when it exists)
   if (homeGol && awayGol) {
     if (homeGol_event && awayGol_event) {
-      console.log("2 gols at once? comparing times: home " + homeGol_event.time + " vs away " +
+      console.log("both home & away gols? comparing times: home " + homeGol_event.time + " vs away " +
         awayGol_event.time);
       if (homeGol_event.time > awayGol_event.time) {
         tweeter.golTweet(away.code, awayGol_event);
@@ -284,7 +284,7 @@ var runTestFiles = function() {
 };
 
 // RUN WITH TEST FILES:
-runTestFiles();
+// runTestFiles();
 // scrapeCurrent(testFile_y);
 
 // RUN WITH TEST SCRAPER:

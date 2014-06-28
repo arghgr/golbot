@@ -11,17 +11,6 @@ var scorefetcher = require("./scorefetcher");
 // Every hour, checks whether a match is in progress
 // If match is in progress, runs score fetcher every 10 seconds for 2.5 hours
 
-// Production values:
-// var scoreCheck_freq = 1000 * 10; // Scrape every ten seconds
-// var match_length = 1000 * 60 * 60 * 2.5; // Keep scraper running for 2.5 hours
-// var ping_interval = 1000 * 60; // Check for matches every hour
-
-// Test values:
-var scoreCheck_freq = 1000 * 10;
-var match_length = 1000 * 60 * 2.5;
-var ping_interval = 1000 * 30;
-
-
 var scraper = null;
 
 var startScraper = function() {
@@ -81,10 +70,13 @@ var getMatches = function(file) {
           var matchHour = parseInt(matchesData[i].datetime.substr(11,13), 10);
           console.log("matchDate: " + matchDate);
           console.log("matchHour: " + matchHour);
-          if (date == matchDate && hour == matchHour) {
-            console.log("game time");
-            doScrape = true;
-            break;
+          var matchEnd = matchHour + 2;
+          if (date == matchDate) {
+            if (hour >= matchHour && hour < matchEnd) {
+              console.log("game time");
+              doScrape = true;
+              break;
+            }
           }
         }
       }
@@ -113,13 +105,25 @@ var checkIfMatch = function(file) {
 var testFile1 = path.join(__dirname + '/test_files/examplex_currentx.json');
 var testFile2 = path.join(__dirname + '/test_files/examplex_currenty.json');
 
-// RUN WITH TEST DATA AND SCRAPE SPEEDS
-// getMatches(testFile2);
-// var test = setInterval(function() {
-//   checkIfMatch(testFile2);
-// }, ping_interval);
+var isProduction = process.env.IS_PRODUCTION;
 
-// RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
-// var production = setInterval(function() {
-//   checkIfMatch();
-// }, ping_interval);
+if (isProduction == true) {
+  // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
+  var scoreCheck_freq = 1000 * 10; // Scrape every thirty seconds
+  var match_length = 1000 * 60 * 60 * 2.5; // Keep scraper running for 2.5 hours
+  var ping_interval = 1000 * 60 * 2; // Check for matches twice every hour
+
+  var production = setInterval(function() {
+    checkIfMatch();
+  }, ping_interval);
+} else {
+  // RUN WITH TEST DATA AND SCRAPE SPEEDS
+  var scoreCheck_freq = 1000 * 5;
+  var match_length = 1000 * 30;
+  var ping_interval = 1000 * 10;
+
+  getMatches(testFile1);
+  var test = setInterval(function() {
+    checkIfMatch(testFile1);
+  }, ping_interval);
+}
