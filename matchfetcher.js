@@ -111,7 +111,7 @@ var checkIfMatch = function(file) {
 var testFile1 = path.join(__dirname + '/test_files/examplex_currentx.json');
 var testFile2 = path.join(__dirname + '/test_files/examplex_currenty.json');
 
-var isProduction = process.env.IS_PRODUCTION;
+var isProduction = JSON.parse(process.env.IS_PRODUCTION);
 
 if (isProduction == true) {
   // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
@@ -119,22 +119,27 @@ if (isProduction == true) {
   var match_length = 1000 * 60 * 60 * 2.5; // Keep scraper running for 2.5 hours
   var ping_interval = 1000 * 60; // Check time every minute
 
-  console.log("isProduction? " + isProduction);
+  console.log("isProduction: " + isProduction);
   console.log("scoreCheck_freq: " + scoreCheck_freq);
   console.log("match_length: " + match_length);
   console.log("ping_interval: " + ping_interval);
   var production = setInterval(function() {
     checkIfMatch();
   }, ping_interval);
-} else {
+} else if (isProduction == false) {
   // RUN WITH TEST DATA AND SCRAPE SPEEDS
   var scoreCheck_freq = 1000 * 5;
   var match_length = 1000 * 30;
   var ping_interval = 1000 * 10;
 
   console.log("isProduction? " + isProduction);
+  console.log("scoreCheck_freq? " + scoreCheck_freq);
+  console.log("match_length? " + match_length);
+  console.log("ping_interval? " + ping_interval);
   // getMatches(testFile1);
   var test = setInterval(function() {
     checkIfMatch();
   }, ping_interval);
+} else {
+  console.log("no isProduction");
 }

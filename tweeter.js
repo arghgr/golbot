@@ -35,7 +35,7 @@ var golTweet = function(team_code, gol_event) {
   var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + gol_event.time;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
-  var isProduction = process.env.IS_PRODUCTION;
+  var isProduction = JSON.parse(process.env.IS_PRODUCTION);
   if (isProduction) { postTweet(tweet); }
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
