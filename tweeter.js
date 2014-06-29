@@ -25,6 +25,23 @@ var postTweet = function(tweet) {
   });
 };
 
+var penaltyTweet = function(team_code) {
+  var o_number = o.oCalc(team_code);
+  if (o_number) {
+    var gol = "G" + Array(o_number).join("O") + "L";
+    var bang = Array(o_number).join("!");
+  } else {
+    var gol = "GOL";
+    var bang = "!";
+  }
+  var tweet = gol + " #" + team_code + "\nin penalty shoot-out" + bang;
+  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+  console.log(tweet);
+  var isProduction = JSON.parse(process.env.IS_PRODUCTION);
+  if (isProduction) { postTweet(tweet); }
+  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+};
+
 var golTweet = function(team_code, gol_event) {
   var o_number = o.oCalc(team_code);
   if (o_number) {
@@ -41,3 +58,4 @@ var golTweet = function(team_code, gol_event) {
 };
 
 exports.golTweet = golTweet;
+exports.penaltyTweet = penaltyTweet;

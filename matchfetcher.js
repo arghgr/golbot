@@ -96,6 +96,10 @@ var checkIfMatch = function(file) {
   var datetime = new Date();
   var minutes = datetime.getMinutes();
   console.log("minutes: " + minutes);
+  var date = datetime.toJSON().substr(0,10);
+  var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - 3;
+  console.log("date: " + date);
+  console.log("hour: " + hour);
   // Checks for matches in the last five minutes and first ten minutes of every hour
   if (minutes >= 55 || minutes <= 10) {
     console.log("checking for scraping in progress");

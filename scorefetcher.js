@@ -181,11 +181,14 @@ var checkIfNewGol = function(match) {
   var awayGol = null;
   var homeGol_event = null;
   var awayGol_event = null;
+  var homePenalty = null;
+  var awayPenalty = null;
 
   var checkEvents = function(team) {
     var last = null;
     var current = null;
     var gol = null;
+    var penalty = null;
     var lastGolEvent = null;
     if (team == "home") {
       last = match.lastMatchData.home_team;
@@ -214,11 +217,18 @@ var checkIfNewGol = function(match) {
           awayGol_event = gol_event;
           match.lastGolEvent_away = gol_event;
         }
-      } else if (_.isEqual(gol_event, lastGolEvent) && lastGolEvent != null) {
+      } else if (gol_event != null && _.isEqual(gol_event, lastGolEvent)) {
         console.log("gol_event = lastGolEvent?!");
         console.log(lastGolEvent);
       } else {
         console.log("gol_event is null?");
+      }
+    } else if (last && current && last.penalties < current.penalties) {
+      penalty = true;
+      if (team == "home") {
+        homePenalty = penalty;
+      } else if (team == "away") {
+        awayPenalty = penalty;
       }
     }
   };
@@ -265,6 +275,10 @@ var checkIfNewGol = function(match) {
       console.log("++++++++++++++++++++++++++");
       return false;
     }
+  } else if (homePenalty || awayPenalty) {
+    if (homePenalty) { tweeter.penaltyTweet(home.code); }
+    if (awayPenalty) { tweeter.penaltyTweet(away.code); }
+    return true;
   } else {
     console.log("no gol detected");
     console.log("++++++++++++++++++++++++++");
@@ -283,8 +297,19 @@ var runTestFiles = function() {
   });
 };
 
+var testFile_a = path.join(__dirname + '/test_files/examplex_currentx.json');
+var testFile_b = path.join(__dirname + '/test_files/examplex_currenty.json');
+var testFile_c = path.join(__dirname + '/test_files/examplex_currentz.json');
+var runCustomTestFiles = function() {
+  scrapeCurrent(testFile_a, function() {
+    scrapeCurrent(testFile_b, function() {
+      scrapeCurrent(testFile_c);
+    });
+  });
+};
 // RUN WITH TEST FILES:
 // runTestFiles();
+// runCustomTestFiles();
 // scrapeCurrent(testFile_y);
 
 // RUN WITH TEST SCRAPER:
