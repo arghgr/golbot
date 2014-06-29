@@ -131,8 +131,9 @@ var searchGolEvent = function(match, team) {
   if (events) {
     for (i = 0; i < events.length; i++) {
       lastEvent = events[i];
-      if (lastEvent.type_of_event != "goal") {
+      if (lastEvent.type_of_event != "goal" && lastEvent.type_of_event != "goal-penalty") {
         console.log("event " + i + " not gol");
+        console.log(lastEvent.type_of_event);
         continue;
       } else {
         console.log("found gol!");
@@ -286,9 +287,9 @@ var checkIfNewGol = function(match) {
   }
 };
 
-var testFile_x = path.join(__dirname + '/test_files/example5_current1.json');
-var testFile_y = path.join(__dirname + '/test_files/example5_current2.json');
-var testFile_z = path.join(__dirname + '/test_files/example5_current3.json');
+var testFile_x = path.join(__dirname + '/test_files/example7_today0.json');
+var testFile_y = path.join(__dirname + '/test_files/example7_today1.json');
+var testFile_z = path.join(__dirname + '/test_files/example7_today2.json');
 var runTestFiles = function() {
   scrapeCurrent(testFile_x, function() {
     scrapeCurrent(testFile_y, function() {
@@ -308,7 +309,7 @@ var runCustomTestFiles = function() {
   });
 };
 // RUN WITH TEST FILES:
-// runTestFiles();
+runTestFiles();
 // runCustomTestFiles();
 // scrapeCurrent(testFile_y);
 

@@ -49,7 +49,17 @@ var golTweet = function(team_code, gol_event) {
   } else {
     var gol = "GOL";
   }
-  var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + gol_event.time;
+  var event_time = gol_event.time;
+  // var time = event_time.substring(0, 3);
+  // var extra_time = null;
+  var time_string = event_time;
+  // if (time && time.length > 2 && time > 90) {
+  //   console.log("is 90+ minutes");
+  //   console.log(time.substring(2));
+  //   extra_time = time.substring(2);
+  //   time_string = "90+" + extra_time;
+  // }
+  var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + time_string;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
   var isProduction = JSON.parse(process.env.IS_PRODUCTION);
