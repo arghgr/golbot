@@ -94,19 +94,24 @@ var isProduction = JSON.parse(process.env.IS_PRODUCTION);
 
 if (!isProduction) {
   // Tests:
-  oCalc("BRA");
-  oCalc("URU");
-  oCalc("ARG");
-  oCalc("CRC");
-  oCalc("MEX");
-  oCalc("USA");
-  // oCalc("ESP");
-  oCalc("FRA");
-  oCalc("SUI");
-  oCalc("ALG");
-  // oCalc("AUS");
-  // oCalc("JPN");
-  // oCalc("KOR");
+  // oCalc("BRA");
+  // oCalc("URU");
+  // oCalc("ARG");
+  // oCalc("CRC");
+  // oCalc("MEX");
+  // oCalc("USA");
+  // // oCalc("ESP");
+  // oCalc("NGA");
+  // oCalc("FRA");
+  // oCalc("SUI");
+  // oCalc("ALG");
+  // oCalc("GER");
+  // // oCalc("AUS");
+  // // oCalc("JPN");
+  // // oCalc("KOR");
+  for (var country in latinAmBg) {
+    oCalc(country);
+  }
 }
 
 exports.oCalc = oCalc;

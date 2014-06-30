@@ -5,6 +5,7 @@ var twit = require("twit");
 
 var o = require("./ocalculator");
 
+var isProduction = JSON.parse(process.env.IS_PRODUCTION);
 
 var T = new twit({
   consumer_key: process.env.GB_KEY,
@@ -37,7 +38,6 @@ var penaltyTweet = function(team_code) {
   var tweet = gol + " #" + team_code + "\nin penalty shoot-out" + bang;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
-  var isProduction = JSON.parse(process.env.IS_PRODUCTION);
   if (isProduction) { postTweet(tweet); }
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
@@ -62,7 +62,6 @@ var golTweet = function(team_code, gol_event) {
   var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + time_string;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
-  var isProduction = JSON.parse(process.env.IS_PRODUCTION);
   if (isProduction) { postTweet(tweet); }
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
