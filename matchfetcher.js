@@ -60,6 +60,7 @@ var getMatches = function(file) {
     var datetime = new Date();
     var date = datetime.toJSON().substr(0,10);
     var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - 3;
+    if (hour < 0) { hour += 24; }
     console.log("date: " + date);
     console.log("hour: " + hour);
     if (matchesData.length > 0) {
@@ -120,7 +121,7 @@ var isProduction = JSON.parse(process.env.IS_PRODUCTION);
 if (isProduction == true) {
   // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
   var scoreCheck_freq = 1000 * 20; // Scrape every twenty seconds
-  var match_length = 1000 * 60 * 60 * 2.5; // Keep scraper running for 2.5 hours
+  var match_length = 1000 * 60 * 60 * 3; // Keep scraper running for 3 hours
   var ping_interval = 1000 * 60; // Check time every minute
 
   console.log("isProduction: " + isProduction);

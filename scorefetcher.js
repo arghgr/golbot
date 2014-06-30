@@ -76,8 +76,7 @@ var scrapeCurrent = function(file, callback) {
         }
       });
     } else {
-      console.log("no matches in progress\nresetting values");
-      matches = [];
+      console.log("no matches in progress");
     }
     if (callback) { callback(); }
   };
@@ -131,9 +130,10 @@ var searchGolEvent = function(match, team) {
   if (events) {
     for (i = 0; i < events.length; i++) {
       lastEvent = events[i];
-      if (lastEvent.type_of_event != "goal" && lastEvent.type_of_event != "goal-penalty") {
+      var eventType = lastEvent.type_of_event;
+      if (eventType != "goal" && eventType != "goal-penalty") {
         console.log("event " + i + " not gol");
-        console.log(lastEvent.type_of_event);
+        console.log(eventType);
         continue;
       } else {
         console.log("found gol!");
@@ -224,7 +224,7 @@ var checkIfNewGol = function(match) {
       } else {
         console.log("gol_event is null?");
       }
-    } else if (last && current && last.penalties < current.penalties) {
+    } else if (last && current && last.penalties && last.penalties < current.penalties) {
       penalty = true;
       if (team == "home") {
         homePenalty = penalty;
@@ -287,9 +287,9 @@ var checkIfNewGol = function(match) {
   }
 };
 
-var testFile_x = path.join(__dirname + '/test_files/example7_today0.json');
-var testFile_y = path.join(__dirname + '/test_files/example7_today1.json');
-var testFile_z = path.join(__dirname + '/test_files/example7_today2.json');
+var testFile_x = path.join(__dirname + '/test_files/example7_today2.json');
+var testFile_y = path.join(__dirname + '/test_files/example7_today3.json');
+var testFile_z = path.join(__dirname + '/test_files/example7_today4.json');
 var runTestFiles = function() {
   scrapeCurrent(testFile_x, function() {
     scrapeCurrent(testFile_y, function() {
@@ -308,15 +308,20 @@ var runCustomTestFiles = function() {
     });
   });
 };
-// RUN WITH TEST FILES:
-// runTestFiles();
-// runCustomTestFiles();
-// scrapeCurrent(testFile_y);
 
-// RUN WITH TEST SCRAPER:
-// setInterval(scrapeCurrent, 5000);
+var isProduction = JSON.parse(process.env.IS_PRODUCTION);
 
-// RUN AT PRODUCTION SCRAPER SPEED:
-// setInterval(scrapeCurrent, 10 * 1000);
+if (!isProduction) {
+  // RUN WITH TEST FILES:
+  runTestFiles();
+  // runCustomTestFiles();
+  // scrapeCurrent(testFile_y);
+
+  // RUN WITH TEST SCRAPER:
+  // setInterval(scrapeCurrent, 5000);
+
+  // RUN AT PRODUCTION SCRAPER SPEED:
+  // setInterval(scrapeCurrent, 10 * 1000);
+}
 
 exports.scrapeCurrent = scrapeCurrent;
