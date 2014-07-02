@@ -29,8 +29,8 @@ var postTweet = function(tweet) {
 var penaltyTweet = function(team_code) {
   var o_number = o.oCalc(team_code);
   if (o_number) {
-    var gol = "G" + Array(o_number).join("O") + "L";
-    var bang = Array(o_number).join("!");
+    var gol = "G" + Array(o_number + 1).join("O") + "L";
+    var bang = Array(o_number + 1).join("!");
   } else {
     var gol = "GOL";
     var bang = "!";
@@ -45,7 +45,7 @@ var penaltyTweet = function(team_code) {
 var ownGolTweet = function(team_code, opponent_code, gol_event) {
   var o_number = o.oCalc(opponent_code);
   if (o_number) {
-    var gol = "G" + Array(o_number).join("O") + "L";
+    var gol = "G" + Array(o_number + 1).join("O") + "L";
   } else {
     var gol = "GOL";
   }
@@ -62,7 +62,7 @@ var ownGolTweet = function(team_code, opponent_code, gol_event) {
 var golTweet = function(team_code, gol_event) {
   var o_number = o.oCalc(team_code);
   if (o_number) {
-    var gol = "G" + Array(o_number).join("O") + "L";
+    var gol = "G" + Array(o_number + 1).join("O") + "L";
   } else {
     var gol = "GOL";
   }
