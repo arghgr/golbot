@@ -8,8 +8,8 @@ var _ = require("underscore");
 var tweeter = require("./tweeter");
 
 // SCORE FETCHER
-// Fetches score data and checks whether a goal has been scored
-// If goal has been scored, runs tweeter
+// Fetches latest events and checks whether a gol has been scored
+// If gol has been scored, runs tweeter
 
 var matches = [];
 
@@ -85,7 +85,8 @@ var scrapeCurrent = function(file, callback) {
     var currentMatchData = match.currentMatchData;
     var lastMatchData = match.lastMatchData;
 
-    var gol_check = true;
+    var home_newEvents = [];
+    var away_newEvents = [];
     if (currentMatchData) {
       console.log("***************************");
       console.log(currentMatchData.match_number + " (" + currentMatchData.status + ")" );
@@ -95,201 +96,58 @@ var scrapeCurrent = function(file, callback) {
         + currentMatchData.away_team.goals);
       console.log("***************************");
       if (lastMatchData) {
-        if (currentMatchData.match_number == lastMatchData.match_number) {
-          gol_check = checkIfNewGol(match);
-        } else {
-          console.log("current match_number != last match_number");
-        }
+        checkForGol(currentMatchData, lastMatchData);
       } else {
         console.log("no lastMatchData for #" + currentMatchData.match_number);
       }
-      if (gol_check) {
-        match.lastMatchData = match.currentMatchData;
-      } else {
-        console.log("scrape: gol_check senses something fishy. not updating lastMatchData for now");
-      }
     }
-    return;
   };
 };
 
-var searchGolEvent = function(match, team) {
-  console.log("######## SEARCHING FOR GOL EVENT ########");
-  var events = null;
-  var lastEvent = null;
+var checkForGol = function(current, last) {
+  var home_newEvents = _.filter(current.home_team_events, function(ev) {
+    return !_.findWhere(last.home_team_events, ev);
+  });
+  var away_newEvents = _.filter(current.away_team_events, function(ev) {
+    return !_.findWhere(last.away_team_events, ev);
+  });
+
+  if (home_newEvents.length > 0) {
+    home_newEvents.forEach(function(ev) {
+      var gol = ev.type_of_event.indexOf("goal");
+      if (gol > -1) { parseGol(ev, current, "home"); }
+    });
+  }
+
+  if (away_newEvents.length > 0) {
+    away_newEvents.forEach(function(ev) {
+      var gol = ev.type_of_event.indexOf("goal");
+      if (gol > -1) { parseGol(ev, current, "away"); }
+    });
+  }
+};
+
+var parseGol = function(ev, match, team) {
   if (team == "home") {
-    events = match.home_team_events.reverse();
-    console.log("searching home events!");
+    var team = match.home_team;
+    var opponent = match.away_team;
   } else if (team == "away") {
-    events = match.away_team_events.reverse();
-    console.log("searching away events!");
+    var team = match.away_team;
+    var opponent = match.home_team;
   } else {
-    console.log("wtf was there even a gol?");
+    console.log("no team specified in parseGol");
   }
-
-  if (events) {
-    for (i = 0; i < events.length; i++) {
-      lastEvent = events[i];
-      var eventType = lastEvent.type_of_event;
-      if (eventType != "goal" && eventType != "goal-penalty") {
-        console.log("event " + i + " not gol");
-        console.log(eventType);
-        continue;
-      } else {
-        console.log("found gol!");
-        break;
-      }
-    }
+  var type = ev.type_of_event;
+  if (type != "goal-own") {
+    tweeter.golTweet(team.code, ev);
   } else {
-    console.log("search: no events?");
-  }
-
-  if (lastEvent) {
-    var eventType = lastEvent.type_of_event;
-    var eventString = eventType.substring(0, 4);
-    if (eventString) {
-      if (eventString == "goal") {
-        console.log("########################################");
-        return lastEvent;
-      } else {
-        console.log("gol not found");
-        console.log("????????????????????????????????????????");
-        return null;
-      }
-    } else {
-      if (eventType == "goal" || eventType == "goal-penalty") {
-        console.log("########################################");
-        return lastEvent;
-      } else {
-        console.log("gol not found??");
-        console.log("????????????????????????????????????????");
-        return null;
-      }
-    }
-  } else {
-    console.log("search: no lastEvent?");
+    tweeter.ownGolTweet(team.code, opponent.code, ev);
   }
 };
 
-var checkIfNewGol = function(match) {
-  console.log("++++++++++++++++++++++++++");
-  console.log("GOL CHECK:");
-
-  var home = match.currentMatchData.home_team;
-  var away = match.currentMatchData.away_team;
-
-  var homeGol = null;
-  var awayGol = null;
-  var homeGol_event = null;
-  var awayGol_event = null;
-  var homePenalty = null;
-  var awayPenalty = null;
-
-  var checkEvents = function(team) {
-    var last = null;
-    var current = null;
-    var gol = null;
-    var penalty = null;
-    var lastGolEvent = null;
-    if (team == "home") {
-      last = match.lastMatchData.home_team;
-      current = home;
-      lastGolEvent = match.lastGolEvent_home;
-    } else if (team == "away") {
-      last = match.lastMatchData.away_team;
-      current = away;
-      lastGolEvent = match.lastGolEvent_away;
-    } else {
-      console.log("no team specified");
-    }
-
-    console.log(team + ": " + last.goals + " =?= " + current.goals);
-
-    if (last && current && last.goals < current.goals) {
-      gol = true;
-      var gol_event = searchGolEvent(match.currentMatchData, team);
-      if (gol_event != null && !_.isEqual(gol_event, lastGolEvent)) {
-        if (team == "home") {
-          homeGol = gol;
-          homeGol_event = gol_event;
-          match.lastGolEvent_home = gol_event;
-        } else if (team == "away") {
-          awayGol = gol;
-          awayGol_event = gol_event;
-          match.lastGolEvent_away = gol_event;
-        }
-      } else if (gol_event != null && _.isEqual(gol_event, lastGolEvent)) {
-        console.log("gol_event = lastGolEvent?!");
-        console.log(lastGolEvent);
-      } else {
-        console.log("gol_event is null?");
-      }
-    } else if (last && current && last.penalties && last.penalties < current.penalties) {
-      penalty = true;
-      if (team == "home") {
-        homePenalty = penalty;
-      } else if (team == "away") {
-        awayPenalty = penalty;
-      }
-    }
-  };
-
-  checkEvents("home");
-  checkEvents("away");
-
-  // Checks whether gol is detected and is accompanied by gol event
-  // Tweet if gol; tweet earlier gol first if both home and away
-  // If checkIfGol returns false, lastMatchData won't be replaced w/ currentMatchData
-  // (so curentMatchData can run again and properly get gol event when it exists)
-  if (homeGol && awayGol) {
-    if (homeGol_event && awayGol_event) {
-      console.log("both home & away gols? comparing times: home " + homeGol_event.time + " vs away " +
-        awayGol_event.time);
-      if (homeGol_event.time > awayGol_event.time) {
-        tweeter.golTweet(away.code, awayGol_event);
-        tweeter.golTweet(home.code, homeGol_event);
-      } else {
-        tweeter.golTweet(home.code, homeGol_event);
-        tweeter.golTweet(away.code, awayGol_event);
-      }
-      console.log("2 gols detected");
-      console.log("++++++++++++++++++++++++++");
-      return true;
-    } else {
-      console.log("2 gols detected, but not both gol events");
-      console.log("++++++++++++++++++++++++++");
-      return false;
-    }
-  } else if (homeGol || awayGol) {
-    if (homeGol && homeGol_event) {
-      tweeter.golTweet(home.code, homeGol_event);
-      console.log("home gol detected");
-      console.log("++++++++++++++++++++++++++");
-      return true;
-    } else if (awayGol && awayGol_event) {
-      tweeter.golTweet(away.code, awayGol_event);
-      console.log("away gol detected");
-      console.log("++++++++++++++++++++++++++");
-      return true;
-    } else {
-      console.log("gol doesn't have event");
-      console.log("++++++++++++++++++++++++++");
-      return false;
-    }
-  } else if (homePenalty || awayPenalty) {
-    if (homePenalty) { tweeter.penaltyTweet(home.code); }
-    if (awayPenalty) { tweeter.penaltyTweet(away.code); }
-    return true;
-  } else {
-    console.log("no gol detected");
-    console.log("++++++++++++++++++++++++++");
-    return true;
-  }
-};
-
-var testFile_x = path.join(__dirname + '/test_files/example7_today2.json');
-var testFile_y = path.join(__dirname + '/test_files/example7_today3.json');
-var testFile_z = path.join(__dirname + '/test_files/example7_today4.json');
+var testFile_x = path.join(__dirname + '/test_files/example7_today0.json');
+var testFile_y = path.join(__dirname + '/test_files/example7_today1.json');
+var testFile_z = path.join(__dirname + '/test_files/example7_today2x.json');
 var runTestFiles = function() {
   scrapeCurrent(testFile_x, function() {
     scrapeCurrent(testFile_y, function() {

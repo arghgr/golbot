@@ -42,6 +42,23 @@ var penaltyTweet = function(team_code) {
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 
+var ownGolTweet = function(team_code, opponent_code, gol_event) {
+  var o_number = o.oCalc(opponent_code);
+  if (o_number) {
+    var gol = "G" + Array(o_number).join("O") + "L";
+  } else {
+    var gol = "GOL";
+  }
+  var event_time = gol_event.time;
+  var time_string = event_time;
+  var tweet = gol + " #" + opponent_code
+    + "\nown gol by #" + team_code + "'s " + gol_event.player + " in minute " + time_string;
+  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+  console.log(tweet);
+  if (isProduction) { postTweet(tweet); }
+  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+};
+
 var golTweet = function(team_code, gol_event) {
   var o_number = o.oCalc(team_code);
   if (o_number) {
@@ -50,15 +67,7 @@ var golTweet = function(team_code, gol_event) {
     var gol = "GOL";
   }
   var event_time = gol_event.time;
-  // var time = event_time.substring(0, 3);
-  // var extra_time = null;
   var time_string = event_time;
-  // if (time && time.length > 2 && time > 90) {
-  //   console.log("is 90+ minutes");
-  //   console.log(time.substring(2));
-  //   extra_time = time.substring(2);
-  //   time_string = "90+" + extra_time;
-  // }
   var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + time_string;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
@@ -67,4 +76,5 @@ var golTweet = function(team_code, gol_event) {
 };
 
 exports.golTweet = golTweet;
+exports.ownGolTweet = ownGolTweet;
 exports.penaltyTweet = penaltyTweet;

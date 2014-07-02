@@ -109,9 +109,9 @@ if (!isProduction) {
   // // oCalc("AUS");
   // // oCalc("JPN");
   // // oCalc("KOR");
-  for (var country in latinAmBg) {
-    oCalc(country);
-  }
+  // for (var country in latinAmBg) {
+  //   oCalc(country);
+  // }
 }
 
 exports.oCalc = oCalc;
