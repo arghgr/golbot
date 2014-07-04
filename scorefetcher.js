@@ -115,14 +115,20 @@ var checkForGol = function(current, last) {
   if (home_newEvents.length > 0) {
     home_newEvents.forEach(function(ev) {
       var gol = ev.type_of_event.indexOf("goal");
-      if (gol > -1) { parseGol(ev, current, "home"); }
+      var lastGol = _.where(last.home_team_events, { id: ev.id });
+      if (gol > -1 && _.isEmpty(lastGol)) {
+        parseGol(ev, current, "home");
+      }
     });
   }
 
   if (away_newEvents.length > 0) {
     away_newEvents.forEach(function(ev) {
       var gol = ev.type_of_event.indexOf("goal");
-      if (gol > -1) { parseGol(ev, current, "away"); }
+      var lastGol = _.where(last.away_team_events, { id: ev.id });
+      if (gol > -1 && _.isEmpty(lastGol)) {
+        parseGol(ev, current, "away");
+      }
     });
   }
 };
@@ -145,9 +151,9 @@ var parseGol = function(ev, match, team) {
   }
 };
 
-var testFile_x = path.join(__dirname + '/test_files/example7_today0.json');
-var testFile_y = path.join(__dirname + '/test_files/example7_today1.json');
-var testFile_z = path.join(__dirname + '/test_files/example7_today2x.json');
+var testFile_x = path.join(__dirname + '/test_files/example8_today4.json');
+var testFile_y = path.join(__dirname + '/test_files/example8_today5x.json');
+var testFile_z = path.join(__dirname + '/test_files/example8_today5.json');
 var runTestFiles = function() {
   scrapeCurrent(testFile_x, function() {
     scrapeCurrent(testFile_y, function() {
