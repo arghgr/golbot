@@ -97,11 +97,30 @@ var scrapeCurrent = function(file, callback) {
       console.log("***************************");
       if (lastMatchData) {
         checkForGol(currentMatchData, lastMatchData);
+        checkForShootout(currentMatchData, lastMatchData);
       } else {
         console.log("no lastMatchData for #" + currentMatchData.match_number);
       }
     }
   };
+};
+
+var checkForShootout = function(current, last) {
+  var currentStatus = current.status;
+  var lastStatus = last.status;
+  var home = current.home_team;
+  var away = current.away_team;
+  if (currentStatus == "completed" & lastStatus == "in progress") {
+    if (home.penalties && away.penalties) {
+      if (home.penalties > away.penalties) {
+        tweeter.penaltyTweet(home.code, home.penalties);
+      } else if (home.penalties < away.penalties) {
+        tweeter.penaltyTweet(away.code, away.penalties);
+      } else {
+        console.log("there was a penalty shootout tie?");
+      }
+    }
+  }
 };
 
 var checkForGol = function(current, last) {
@@ -151,9 +170,9 @@ var parseGol = function(ev, match, team) {
   }
 };
 
-var testFile_x = path.join(__dirname + '/test_files/example8_today4.json');
-var testFile_y = path.join(__dirname + '/test_files/example8_today5x.json');
-var testFile_z = path.join(__dirname + '/test_files/example8_today5.json');
+var testFile_x = path.join(__dirname + '/test_files/example9_today4.json');
+var testFile_y = path.join(__dirname + '/test_files/example9_today5.json');
+var testFile_z = path.join(__dirname + '/test_files/example9_today5.json');
 var runTestFiles = function() {
   scrapeCurrent(testFile_x, function() {
     scrapeCurrent(testFile_y, function() {

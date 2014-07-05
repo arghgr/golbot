@@ -26,16 +26,17 @@ var postTweet = function(tweet) {
   });
 };
 
-var penaltyTweet = function(team_code) {
+var penaltyTweet = function(team_code, penalties) {
   var o_number = o.oCalc(team_code);
   if (o_number) {
     var gol = "G" + Array(o_number + 1).join("O") + "L";
+    var gols = Array(penalties).join("GOL ") + gol;
     var bang = Array(o_number + 1).join("!");
   } else {
     var gol = "GOL";
     var bang = "!";
   }
-  var tweet = gol + " #" + team_code + "\nin penalty shoot-out" + bang;
+  var tweet = gols + "\n#" + team_code + " wins in penalty shoot-out" + bang;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
   if (isProduction) { postTweet(tweet); }
