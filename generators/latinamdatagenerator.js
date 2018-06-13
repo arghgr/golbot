@@ -132,4 +132,3 @@ roundOf16 = getRoundOf16(group_data);
 roundOf16_players = getPlayerFiles(players_data);
 getNaturalized(roundOf16_players);
 getLatinAmFiles(roundOf16_LatinAmBg, roundOf16_LatinAmClubs);
-

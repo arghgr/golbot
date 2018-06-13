@@ -9,3 +9,11 @@ Much thanks to:
 * http://www.kimonolabs.com/worldcup/explorer
 * http://thenounproject.com/term/soccer/23509/
 * https://en.wikipedia.org/wiki/2014_FIFA_World_Cup
+
+======
+
+###Documentation
+
+* Make sure ./generated_files exists and is empty
+* Must manually update the information for each team's players with Latin American ties
+* Running each file in ./generators creates the JSON in ./generated_files
