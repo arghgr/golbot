@@ -48,7 +48,7 @@ var matchCountryWithTeam = function(file1, file2) {
   nonmatches = searchByCode(nameNonMatches);
 
   finalData = matches;
-  addManualInput("ENG", countries["GBR"]);
+  addManualInputs(teamsData, countries);
 
   console.log("Final data:");
   console.log(finalData);
@@ -105,8 +105,20 @@ var searchByCode = function(nonmatches) {
   return codeNonMatches;
 };
 
-var addManualInput = function(fifa_code, country_info) {
-  finalData[fifa_code] = country_info;
+var addManualInputs = function(teamsData, countries) {
+  var manualInputs = [
+    {
+      fifa_country: "England",
+      fifa_code: "ENG",
+      country_code: "GBR"
+    }
+  ]
+  manualInputs.forEach(function(manualInput) {
+    if (_.find(teamsData, function(team){ return team.country === manualInput.fifa_country })) {
+      finalData[manualInput.fifa_code] = countries[manualInput.country_code];
+      console.log("* Manually added: " + manualInput.fifa_code);
+    }
+  });
 };
 
 // http://api.worldbank.org/countries?per_page=300&format=json
