@@ -26,7 +26,7 @@ var fifaCapitalsData = fs.readFileSync("generated_files/fifa_capitals.json", { e
     return data;
 });
 
-var latinAmData = fs.readFileSync("generated_files/latin_am_data.json", { encoding: "utf-8" }, function(error, data) {
+var latinAmData = fs.readFileSync("data_files/latin_am_data.json", { encoding: "utf-8" }, function(error, data) {
     if (error) throw error;
     return data;
 });

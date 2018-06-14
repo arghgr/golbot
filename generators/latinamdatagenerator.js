@@ -23,10 +23,11 @@ var generateTeamsDataObj = function(fileData) {
       return data;
     });
   };
-  var teamsData = Object.keys(JSON.parse(teams_data));
-  teamsData.forEach(function(team) {
-    latinAmData["background"][team] = 0;
-    latinAmData["clubs"][team] = 0;
+  var fifaCodes = Object.keys(JSON.parse(teams_data));
+  var sortedFifaCodes = _.sortBy(fifaCodes, function(fifaCode){ return fifaCode; })
+  sortedFifaCodes.forEach(function(fifaCode) {
+    latinAmData["background"][fifaCode] = 0;
+    latinAmData["clubs"][fifaCode] = 0;
   });
 };
 
