@@ -12,40 +12,16 @@ var _ = require("underscore");
 // http://api.worldbank.org/countries?per_page=300&format=json
 // http://worldcup.sfg.io/teams
 
-var file1_data = null;
-var file2_data = null;
-var countries = {};
-var teams = {};
-var matches = {};
-var finalData = {};
+var matchCountryWithTeam = function(countries_path, teams_path) {
+  var finalData = {};
 
-var matchCountryWithTeam = function(file1, file2) {
+  var countries = parseCountriesData(countries_path);
+  var teams = parseTeamsData(teams_path);
+  var nameResults = matchByName(teams, countries);
+  var codeResults = matchByCode(teams, countries, nameResults.matches, nameResults.nameNonMatches);
 
-  if (file1 && file2) {
-    file1_data = fs.readFileSync(file1, { encoding: "utf-8" }, function(error, data) {
-      if (error) { console.log(error); }
-      return data;
-    });
-    file2_data = fs.readFileSync(file2, { encoding: "utf-8" }, function(error, data) {
-      if (error) { console.log(error); }
-      return data;
-    });
-  };
-
-  var countriesData = JSON.parse(file1_data)[1];
-  var teamsData = JSON.parse(file2_data);
-
-  countriesData.forEach(function(country) {
-    countries[country.id] = [country.name, country.capitalCity, country.longitude, country.latitude];
-  });
-
-  teamsData.forEach(function(team) {
-    teams[team.fifa_code] = team.country;
-  });
-
-  var nameNonMatches = searchByName();
-  var nonmatches = searchByCode(nameNonMatches);
-  addManualInputs(teams, countries);
+  var matches = Object.assign(nameResults.matches, codeResults.matches);
+  matches = addManualMatches(teams, countries, matches);
 
   var sortedFifaCodes = _.sortBy(Object.keys(matches), function(fifaCode){ return fifaCode; })
   sortedFifaCodes.forEach(function(fifaCode) {
@@ -54,9 +30,7 @@ var matchCountryWithTeam = function(file1, file2) {
 
   console.log("Final data:");
   console.log(finalData);
-  // console.log("teamsData size: " + _.size(teamsData));
-  // console.log("matches size: " + _.size(matches));
-  // console.log("finalData size: " + _.size(finalData));
+  console.log("finalData size: " + _.size(finalData));
 
   var writePath = path.join(__dirname, "..", "/generated_files/fifa_capitals.json");
   fs.writeFileSync(writePath, JSON.stringify(finalData, null, 2), { encoding: "utf8" },
@@ -66,7 +40,43 @@ var matchCountryWithTeam = function(file1, file2) {
   console.log("Saved file to ../generated_files/fifa_capitals.json");
 };
 
-var searchByName = function() {
+var parseCountriesData = function(countries_path) {
+  var countries_data = null;
+  var countries = {};
+  if (!countries_path) throw Error;
+  countries_data = fs.readFileSync(countries_path, { encoding: "utf-8" }, function(error, data) {
+    if (error) { console.log(error); }
+    return data;
+  });
+  var countriesData = JSON.parse(countries_data)[1];
+  countriesData.forEach(function(country) {
+    countries[country.id] = [country.name, country.capitalCity, country.longitude, country.latitude];
+  });
+  return countries;
+};
+
+var parseTeamsData = function(teams_path) {
+  var teams_data = null;
+  var teams = {};
+  if (!teams_path) throw Error;
+  teams_data = fs.readFileSync(teams_path, { encoding: "utf-8" }, function(error, data) {
+    if (error) { console.log(error); }
+    return data;
+  });
+  var teamsData = JSON.parse(teams_data);
+  teamsData.teams.forEach(function(team) {
+    if (team.fifa_code && team.country) { // worldcup.sfg.io format
+      teams[team.fifa_code] = team.country;
+    } else if (team.code && team.name) { // api.football-data.org format
+      teams[team.code] = team.name;
+    } else {
+      console.log("What format are these teams in?")
+    }
+  });
+  return teams;
+};
+
+var matchByName = function(teams, countries) {
   var nameMatches = {};
   var nameNonMatches = {};
 
@@ -82,11 +92,10 @@ var searchByName = function() {
     if (!match_id) { nameNonMatches[fifa_code] = teams[fifa_code]; }
   }
 
-  matches = nameMatches;
-  return nameNonMatches;
+  return { matches: nameMatches, nameNonMatches: nameNonMatches };
 };
 
-var searchByCode = function(nonmatches) {
+var matchByCode = function(teams, countries, matches, nonmatches) {
   var codeMatches = {};
   var codeNonMatches = {};
 
@@ -107,10 +116,10 @@ var searchByCode = function(nonmatches) {
 
   for (var code in codeMatches) { matches[code] = codeMatches[code]; }
 
-  return codeNonMatches;
+  return { matches: codeMatches, nonmatches: codeNonMatches };
 };
 
-var addManualInputs = function(teams, countries) {
+var addManualMatches = function(teams, countries, matches) {
   var manualInputs = [
     {
       fifa_country: "England",
@@ -124,12 +133,16 @@ var addManualInputs = function(teams, countries) {
       console.log("* Manually added: " + manualInput.fifa_code);
     }
   });
+  return matches;
 };
 
 // http://api.worldbank.org/countries?per_page=300&format=json
 var countries_data = path.join(__dirname, "..", "/data_files/countries.json");
 
 // http://worldcup.sfg.io/teams
-var teams_data = path.join(__dirname, "..", "/data_files/teams.json");
+// var teams_data = path.join(__dirname, "..", "/data_files/teams.json");
+
+// http://api.football-data.org/v1/competitions/467/teams
+var teams_data = path.join(__dirname, "..", "/data_files/teams-footballdata.json");
 
 matchCountryWithTeam(countries_data, teams_data);

@@ -1,39 +1,27 @@
 {
+  "ARG": [
+    "Argentina",
+    "Buenos Aires",
+    "-58.4173",
+    "-34.6118"
+  ],
   "AUS": [
     "Australia",
     "Canberra",
     "149.129",
     "-35.282"
   ],
+  "BEL": [
+    "Belgium",
+    "Brussels",
+    "4.36761",
+    "50.8371"
+  ],
   "BRA": [
     "Brazil",
     "Brasilia",
     "-47.9292",
     "-15.7801"
-  ],
-  "CAN": [
-    "Canada",
-    "Ottawa",
-    "-75.6919",
-    "45.4215"
-  ],
-  "CHN": [
-    "China",
-    "Beijing",
-    "116.286",
-    "40.0495"
-  ],
-  "CIV": [
-    "Cote d'Ivoire",
-    "Yamoussoukro",
-    "-4.0305",
-    "5.332"
-  ],
-  "CMR": [
-    "Cameroon",
-    "Yaounde",
-    "11.5174",
-    "3.8721"
   ],
   "COL": [
     "Colombia",
@@ -47,11 +35,23 @@
     "-84.0089",
     "9.63701"
   ],
-  "ECU": [
-    "Ecuador",
-    "Quito",
-    "-78.5243",
-    "-0.229498"
+  "CRO": [
+    "Croatia",
+    "Zagreb",
+    "15.9614",
+    "45.8069"
+  ],
+  "DEN": [
+    "Denmark",
+    "Copenhagen",
+    "12.5681",
+    "55.6763"
+  ],
+  "EGY": [
+    "Egypt, Arab Rep.",
+    "Cairo",
+    "31.2461",
+    "30.0982"
   ],
   "ENG": [
     "United Kingdom",
@@ -77,6 +77,18 @@
     "13.4115",
     "52.5235"
   ],
+  "IRN": [
+    "Iran, Islamic Rep.",
+    "Tehran",
+    "51.4447",
+    "35.6878"
+  ],
+  "ISL": [
+    "Iceland",
+    "Reykjavik",
+    "-21.8952",
+    "64.1353"
+  ],
   "JPN": [
     "Japan",
     "Tokyo",
@@ -89,17 +101,23 @@
     "126.957",
     "37.5323"
   ],
+  "KSA": [
+    "Saudi Arabia",
+    "Riyadh",
+    "46.6977",
+    "24.6748"
+  ],
+  "MAR": [
+    "Morocco",
+    "Rabat",
+    "-6.8704",
+    "33.9905"
+  ],
   "MEX": [
     "Mexico",
     "Mexico City",
     "-99.1276",
     "19.427"
-  ],
-  "NED": [
-    "Netherlands",
-    "Amsterdam",
-    "4.89095",
-    "52.3738"
   ],
   "NGA": [
     "Nigeria",
@@ -107,17 +125,47 @@
     "7.48906",
     "9.05804"
   ],
-  "NOR": [
-    "Norway",
-    "Oslo",
-    "10.7387",
-    "59.9138"
+  "PAN": [
+    "Panama",
+    "Panama City",
+    "-79.5188",
+    "8.99427"
   ],
-  "NZL": [
-    "New Zealand",
-    "Wellington",
-    "174.776",
-    "-41.2865"
+  "PER": [
+    "Peru",
+    "Lima",
+    "-77.0465",
+    "-12.0931"
+  ],
+  "POL": [
+    "Poland",
+    "Warsaw",
+    "21.02",
+    "52.26"
+  ],
+  "POR": [
+    "Portugal",
+    "Lisbon",
+    "-9.13552",
+    "38.7072"
+  ],
+  "RUS": [
+    "Russian Federation",
+    "Moscow",
+    "37.6176",
+    "55.7558"
+  ],
+  "SEN": [
+    "Senegal",
+    "Dakar",
+    "-17.4734",
+    "14.7247"
+  ],
+  "SRB": [
+    "Serbia",
+    "Belgrade",
+    "20.4656",
+    "44.8024"
   ],
   "SUI": [
     "Switzerland",
@@ -131,16 +179,16 @@
     "18.0645",
     "59.3327"
   ],
-  "THA": [
-    "Thailand",
-    "Bangkok",
-    "100.521",
-    "13.7308"
+  "TUN": [
+    "Tunisia",
+    "Tunis",
+    "10.21",
+    "36.7899"
   ],
-  "USA": [
-    "United States",
-    "Washington D.C.",
-    "-77.032",
-    "38.8895"
+  "URU": [
+    "Uruguay",
+    "Montevideo",
+    "-56.0675",
+    "-34.8941"
   ]
 }
