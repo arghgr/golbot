@@ -19,5 +19,5 @@ Much thanks to:
 * Make sure ./data_files exists and is empty
 * Save [api.worldbank.org/countries?per_page=300&format=json](http://api.worldbank.org/countries?per_page=300&format=json) as ./data_files/countries.json
 * Save [worldcup.sfg.io/teams](worldcup.sfg.io/teams) as ./data_files/teams.json
-* Manually update the information for each team's players with Latin American ties
 * Running each file in ./generators creates the JSON in ./generated_files
+* Manually update ./generated_files/latin_am_data.json with data for each team
