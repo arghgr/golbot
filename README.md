@@ -9,11 +9,15 @@ Much thanks to:
 * http://www.kimonolabs.com/worldcup/explorer
 * http://thenounproject.com/term/soccer/23509/
 * https://en.wikipedia.org/wiki/2014_FIFA_World_Cup
+* http://api.football-data.org
 
 ======
 
 ###Documentation
 
 * Make sure ./generated_files exists and is empty
-* Must manually update the information for each team's players with Latin American ties
+* Make sure ./data_files exists and is empty
+* Save [api.worldbank.org/countries?per_page=300&format=json](http://api.worldbank.org/countries?per_page=300&format=json) as ./data_files/countries.json
+* Save [worldcup.sfg.io/teams](worldcup.sfg.io/teams) as ./data_files/teams.json
+* Manually update the information for each team's players with Latin American ties
 * Running each file in ./generators creates the JSON in ./generated_files

@@ -9,7 +9,7 @@ var _ = require("underscore");
 // based on their FIFA code.
 // I took data from the World Bank API and matched it to FIFA's country codes using
 // @MutualArising's World Cup API.
-// http://api.worldbank.org/countries?per_page=260&format=json
+// http://api.worldbank.org/countries?per_page=300&format=json
 // http://worldcup.sfg.io/teams
 
 var file1_data = null;
@@ -20,7 +20,7 @@ var matches = {};
 var nonmatches = {};
 var finalData = {};
 
-var getMatches = function(file1, file2) {
+var matchCountryWithTeam = function(file1, file2) {
 
   if (file1 && file2) {
     file1_data = fs.readFileSync(file1, { encoding: "utf-8" }, function(error, data) {
@@ -109,7 +109,10 @@ var addManualInput = function(fifa_code, country_info) {
   finalData[fifa_code] = country_info;
 };
 
+// http://api.worldbank.org/countries?per_page=300&format=json
 var countries_data = path.join(__dirname, "..", "/data_files/countries.json");
+
+// http://worldcup.sfg.io/teams
 var teams_data = path.join(__dirname, "..", "/data_files/teams.json");
 
-getMatches(countries_data, teams_data);
+matchCountryWithTeam(countries_data, teams_data);

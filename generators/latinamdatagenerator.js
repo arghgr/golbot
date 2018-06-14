@@ -5,12 +5,12 @@ var request = require("request");
 var _ = require("underscore");
 
 // TEAM DATA GENERATOR
-// This generates JSON to use for ocalculator.js.
-// 
+// This generates teams' Latin American data to use for ocalculator.js.
 
 var roundOf16 = null;
 var roundOf16_players = null;
 
+// Number of players in team with recorded Latin American background
 var roundOf16_LatinAmBg = {
   "ALG": 0,
   "ARG": 23,
@@ -30,6 +30,7 @@ var roundOf16_LatinAmBg = {
   "USA": 3,
 };
 
+// Number of players in team currently playing for Latin American clubs
 var roundOf16_LatinAmClubs = {
   "ALG":0,
   "ARG":4,
@@ -125,7 +126,9 @@ var getLatinAmFiles = function(latinAmBg, latinAmClubs) {
   console.log("Saved file to ../generated_files/latin_am_data.json");
 };
 
+// worldcup.kimonolabs.com/api/players
 var players_data = path.join(__dirname, "..", "/data_files/players.json");
+// worldcup.sfg.io/teams/group_results
 var group_data = path.join(__dirname, "..", "/data_files/group_results.json");
 
 roundOf16 = getRoundOf16(group_data);
