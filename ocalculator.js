@@ -21,7 +21,7 @@ var cuiaba = {
   longitude: -56.096944
 };
 
-var fifaCapitalsData = fs.readFileSync("generated_files/fifa_capitals.json", { encoding: "utf-8" }, function(error, data) {
+var fifaCapitalsData = fs.readFileSync("generated_files/fifa_data.json", { encoding: "utf-8" }, function(error, data) {
     if (error) throw error;
     return data;
 });

@@ -32,12 +32,12 @@ var matchCountryWithTeam = function(countries_path, teams_path) {
   console.log(finalData);
   console.log("finalData size: " + _.size(finalData));
 
-  var writePath = path.join(__dirname, "..", "/generated_files/fifa_capitals.json");
+  var writePath = path.join(__dirname, "..", "/generated_files/fifa_data.json");
   fs.writeFileSync(writePath, JSON.stringify(finalData, null, 2), { encoding: "utf8" },
     function(err) {
     if (err) throw err;
   });
-  console.log("Saved file to ../generated_files/fifa_capitals.json");
+  console.log("Saved file to ../generated_files/fifa_data.json");
 };
 
 var parseCountriesData = function(countries_path) {

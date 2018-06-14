@@ -8,7 +8,7 @@ var _ = require("underscore");
 // This generates a template file for teams' Latin American data
 // that is used in ocalculator.js.
 
-var fifa_data = path.join(__dirname, "..", "/generated_files/fifa_capitals.json");
+var fifa_data = path.join(__dirname, "..", "/generated_files/fifa_data.json");
 var teams_data = null;
 var latinAmData = {
   // Number of players in team with recorded Latin American background
@@ -23,15 +23,17 @@ var generateTeamsDataObj = function(fileData) {
       return data;
     });
   };
-  var fifaCodes = Object.keys(JSON.parse(teams_data));
+  var fifaData = JSON.parse(teams_data);
+  var fifaCodes = Object.keys(fifaData);
   var sortedFifaCodes = _.sortBy(fifaCodes, function(fifaCode){ return fifaCode; })
   sortedFifaCodes.forEach(function(fifaCode) {
     latinAmData["background"][fifaCode] = 0;
-    latinAmData["clubs"][fifaCode] = 0;
+    // Default fill clubs with all 23 players if country is in Latin America:
+    latinAmData["clubs"][fifaCode] = (fifaData[fifaCode][4] === true) ? 23 : 0;
   });
-
   // console.log("sortedFifaCodes: ", sortedFifaCodes)
   // console.log("sortedFifaCodes size: " + _.size(sortedFifaCodes));
+  console.log(latinAmData);
 };
 
 var generateLatinAmDataFile = function(latinAmData) {
