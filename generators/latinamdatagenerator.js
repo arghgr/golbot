@@ -11,9 +11,9 @@ var _ = require("underscore");
 var fifa_data = path.join(__dirname, "..", "/generated_files/fifa_data.json");
 var teams_data = null;
 var latinAmData = {
-  // Number of players in team with recorded Latin American background
+  // Number of players in team with recorded Latin American or Hispanic background
   "background": {},
-  // Number of players in team currently playing for Latin American clubs
+  // Number of players in team who have ever played for Latin American or Hispanic clubs
   "clubs": {}
 };
 var generateTeamsDataObj = function(fileData) {

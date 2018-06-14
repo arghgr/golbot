@@ -7,8 +7,10 @@ var haversine = require("haversine");
 // 1. The distance (calculated with the Haversine formula) between the team's capital city
 // and Cuiaba, which is the geographic center of South America
 // (Mexico's score is slightly adjusted for its distance from South America proper)
-// 2. The number of players on the team who are Latin American or of Latin American descent
-// 3. The number of players on the team who play for Latin American clubs
+// 2. The number of players on the team who have Latin American or Hispanic backgrounds
+// 3. The number of players on the team who play for Latin American or Hispanic clubs
+// Hispanic here refers to Spanish-speaking or formerly Spanish areas, so for
+// these purposes, Spain, Brazil, and the Philippines are included, but not Portugal.
 
 var teamCapitals = {};
 var teamDistances = {};
