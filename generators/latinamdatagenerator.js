@@ -29,6 +29,9 @@ var generateTeamsDataObj = function(fileData) {
     latinAmData["background"][fifaCode] = 0;
     latinAmData["clubs"][fifaCode] = 0;
   });
+
+  // console.log("sortedFifaCodes: ", sortedFifaCodes)
+  // console.log("sortedFifaCodes size: " + _.size(sortedFifaCodes));
 };
 
 var generateLatinAmDataFile = function(latinAmData) {
