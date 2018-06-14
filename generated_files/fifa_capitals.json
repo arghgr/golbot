@@ -3,192 +3,224 @@
     "Argentina",
     "Buenos Aires",
     "-58.4173",
-    "-34.6118"
+    "-34.6118",
+    true
   ],
   "AUS": [
     "Australia",
     "Canberra",
     "149.129",
-    "-35.282"
+    "-35.282",
+    false
   ],
   "BEL": [
     "Belgium",
     "Brussels",
     "4.36761",
-    "50.8371"
+    "50.8371",
+    false
   ],
   "BRA": [
     "Brazil",
     "Brasilia",
     "-47.9292",
-    "-15.7801"
+    "-15.7801",
+    true
   ],
   "COL": [
     "Colombia",
     "Bogota",
     "-74.082",
-    "4.60987"
+    "4.60987",
+    true
   ],
   "CRC": [
     "Costa Rica",
     "San Jose",
     "-84.0089",
-    "9.63701"
+    "9.63701",
+    true
   ],
   "CRO": [
     "Croatia",
     "Zagreb",
     "15.9614",
-    "45.8069"
+    "45.8069",
+    false
   ],
   "DEN": [
     "Denmark",
     "Copenhagen",
     "12.5681",
-    "55.6763"
+    "55.6763",
+    false
   ],
   "EGY": [
     "Egypt, Arab Rep.",
     "Cairo",
     "31.2461",
-    "30.0982"
+    "30.0982",
+    false
   ],
   "ENG": [
     "United Kingdom",
     "London",
     "-0.126236",
-    "51.5002"
+    "51.5002",
+    false
   ],
   "ESP": [
     "Spain",
     "Madrid",
     "-3.70327",
-    "40.4167"
+    "40.4167",
+    false
   ],
   "FRA": [
     "France",
     "Paris",
     "2.35097",
-    "48.8566"
+    "48.8566",
+    false
   ],
   "GER": [
     "Germany",
     "Berlin",
     "13.4115",
-    "52.5235"
+    "52.5235",
+    false
   ],
   "IRN": [
     "Iran, Islamic Rep.",
     "Tehran",
     "51.4447",
-    "35.6878"
+    "35.6878",
+    false
   ],
   "ISL": [
     "Iceland",
     "Reykjavik",
     "-21.8952",
-    "64.1353"
+    "64.1353",
+    false
   ],
   "JPN": [
     "Japan",
     "Tokyo",
     "139.77",
-    "35.67"
+    "35.67",
+    false
   ],
   "KOR": [
     "Korea, Rep.",
     "Seoul",
     "126.957",
-    "37.5323"
+    "37.5323",
+    false
   ],
   "KSA": [
     "Saudi Arabia",
     "Riyadh",
     "46.6977",
-    "24.6748"
+    "24.6748",
+    false
   ],
   "MAR": [
     "Morocco",
     "Rabat",
     "-6.8704",
-    "33.9905"
+    "33.9905",
+    false
   ],
   "MEX": [
     "Mexico",
     "Mexico City",
     "-99.1276",
-    "19.427"
+    "19.427",
+    true
   ],
   "NGA": [
     "Nigeria",
     "Abuja",
     "7.48906",
-    "9.05804"
+    "9.05804",
+    false
   ],
   "PAN": [
     "Panama",
     "Panama City",
     "-79.5188",
-    "8.99427"
+    "8.99427",
+    true
   ],
   "PER": [
     "Peru",
     "Lima",
     "-77.0465",
-    "-12.0931"
+    "-12.0931",
+    true
   ],
   "POL": [
     "Poland",
     "Warsaw",
     "21.02",
-    "52.26"
+    "52.26",
+    false
   ],
   "POR": [
     "Portugal",
     "Lisbon",
     "-9.13552",
-    "38.7072"
+    "38.7072",
+    false
   ],
   "RUS": [
     "Russian Federation",
     "Moscow",
     "37.6176",
-    "55.7558"
+    "55.7558",
+    false
   ],
   "SEN": [
     "Senegal",
     "Dakar",
     "-17.4734",
-    "14.7247"
+    "14.7247",
+    false
   ],
   "SRB": [
     "Serbia",
     "Belgrade",
     "20.4656",
-    "44.8024"
+    "44.8024",
+    false
   ],
   "SUI": [
     "Switzerland",
     "Bern",
     "7.44821",
-    "46.948"
+    "46.948",
+    false
   ],
   "SWE": [
     "Sweden",
     "Stockholm",
     "18.0645",
-    "59.3327"
+    "59.3327",
+    false
   ],
   "TUN": [
     "Tunisia",
     "Tunis",
     "10.21",
-    "36.7899"
+    "36.7899",
+    false
   ],
   "URU": [
     "Uruguay",
     "Montevideo",
     "-56.0675",
-    "-34.8941"
+    "-34.8941",
+    true
   ]
 }

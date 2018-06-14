@@ -49,11 +49,54 @@ var parseCountriesData = function(countries_path) {
     return data;
   });
   var countriesData = JSON.parse(countries_data)[1];
+  var latinAmCountries = getLatinAmCountries(countriesData);
+
   countriesData.forEach(function(country) {
-    countries[country.id] = [country.name, country.capitalCity, country.longitude, country.latitude];
+    countries[country.id] = [
+      country.name, country.capitalCity,
+      country.longitude, country.latitude,
+      latinAmCountries[country.id] ? true : false
+    ];
   });
   return countries;
 };
+
+var getLatinAmCountries = function(countriesData) {
+  var excludedCodes = {
+    ABW: 'Aruba',
+    ATG: 'Antigua and Barbuda',
+    BHS: 'Bahamas, The',
+    BLZ: 'Belize',
+    BRB: 'Barbados',
+    CUW: 'Curacao',
+    CYM: 'Cayman Islands',
+    DMA: 'Dominica',
+    GRD: 'Grenada',
+    GUY: 'Guyana',
+    JAM: 'Jamaica',
+    KNA: 'St. Kitts and Nevis',
+    LCA: 'St. Lucia',
+    MAF: 'St. Martin (French part)',
+    SUR: 'Suriname',
+    SXM: 'Sint Maarten (Dutch part)',
+    TCA: 'Turks and Caicos Islands',
+    TTO: 'Trinidad and Tobago',
+    VCT: 'St. Vincent and the Grenadines',
+    VGB: 'British Virgin Islands',
+    VIR: 'Virgin Islands (U.S.)'
+  }
+  var latinAmCountries = {};
+  countriesData.filter(function(country) {
+    return country.region.id === 'LCN';
+  }).map(function(country) {
+     if (!excludedCodes[country.id]) latinAmCountries[country.id] = country.name;
+  });
+
+  console.log("latinAmCountries: ", latinAmCountries);
+  console.log("latinAmCountries size:", _.size(latinAmCountries));
+
+  return latinAmCountries;
+}
 
 var parseTeamsData = function(teams_path) {
   var teams_data = null;
