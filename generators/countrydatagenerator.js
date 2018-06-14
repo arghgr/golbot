@@ -17,7 +17,6 @@ var file2_data = null;
 var countries = {};
 var teams = {};
 var matches = {};
-var nonmatches = {};
 var finalData = {};
 
 var matchCountryWithTeam = function(file1, file2) {
@@ -45,14 +44,19 @@ var matchCountryWithTeam = function(file1, file2) {
   });
 
   var nameNonMatches = searchByName();
-  nonmatches = searchByCode(nameNonMatches);
+  var nonmatches = searchByCode(nameNonMatches);
+  addManualInputs(teams, countries);
 
-  finalData = matches;
-  addManualInputs(teamsData, countries);
+  var sortedFifaCodes = _.sortBy(Object.keys(matches), function(fifaCode){ return fifaCode; })
+  sortedFifaCodes.forEach(function(fifaCode) {
+    finalData[fifaCode] = matches[fifaCode];
+  });
 
   console.log("Final data:");
   console.log(finalData);
+  // console.log("teamsData size: " + _.size(teamsData));
   // console.log("matches size: " + _.size(matches));
+  // console.log("finalData size: " + _.size(finalData));
 
   var writePath = path.join(__dirname, "..", "/generated_files/fifa_capitals.json");
   fs.writeFileSync(writePath, JSON.stringify(finalData, null, 2), { encoding: "utf8" },
@@ -102,10 +106,11 @@ var searchByCode = function(nonmatches) {
   }
 
   for (var code in codeMatches) { matches[code] = codeMatches[code]; }
+
   return codeNonMatches;
 };
 
-var addManualInputs = function(teamsData, countries) {
+var addManualInputs = function(teams, countries) {
   var manualInputs = [
     {
       fifa_country: "England",
@@ -114,8 +119,8 @@ var addManualInputs = function(teamsData, countries) {
     }
   ]
   manualInputs.forEach(function(manualInput) {
-    if (_.find(teamsData, function(team){ return team.country === manualInput.fifa_country })) {
-      finalData[manualInput.fifa_code] = countries[manualInput.country_code];
+    if (_.find(teams, function(team){ return team === manualInput.fifa_country })) {
+      matches[manualInput.fifa_code] = countries[manualInput.country_code];
       console.log("* Manually added: " + manualInput.fifa_code);
     }
   });
