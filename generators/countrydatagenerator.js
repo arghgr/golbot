@@ -55,7 +55,7 @@ var matchCountryWithTeam = function(file1, file2) {
   // console.log("matches size: " + _.size(matches));
 
   var writePath = path.join(__dirname, "..", "/generated_files/fifa_capitals.json");
-  fs.writeFileSync(writePath, JSON.stringify(finalData), { encoding: "utf8" },
+  fs.writeFileSync(writePath, JSON.stringify(finalData, null, 2), { encoding: "utf8" },
     function(err) {
     if (err) throw err;
   });

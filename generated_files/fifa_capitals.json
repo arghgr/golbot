@@ -1,1 +1,146 @@
-{"CAN":["Canada","Ottawa","-75.6919","45.4215"],"USA":["United States","Washington D.C.","-77.032","38.8895"],"MEX":["Mexico","Mexico City","-99.1276","19.427"],"CRC":["Costa Rica","San Jose","-84.0089","9.63701"],"COL":["Colombia","Bogota","-74.082","4.60987"],"ECU":["Ecuador","Quito","-78.5243","-0.229498"],"BRA":["Brazil","Brasilia","-47.9292","-15.7801"],"FRA":["France","Paris","2.35097","48.8566"],"ESP":["Spain","Madrid","-3.70327","40.4167"],"NOR":["Norway","Oslo","10.7387","59.9138"],"SWE":["Sweden","Stockholm","18.0645","59.3327"],"NED":["Netherlands","Amsterdam","4.89095","52.3738"],"CMR":["Cameroon","Yaounde","11.5174","3.8721"],"JPN":["Japan","Tokyo","139.77","35.67"],"SUI":["Switzerland","Bern","7.44821","46.948"],"NGA":["Nigeria","Abuja","7.48906","9.05804"],"GER":["Germany","Berlin","13.4115","52.5235"],"CHN":["China","Beijing","116.286","40.0495"],"THA":["Thailand","Bangkok","100.521","13.7308"],"NZL":["New Zealand","Wellington","174.776","-41.2865"],"AUS":["Australia","Canberra","149.129","-35.282"],"CIV":["Cote d'Ivoire","Yamoussoukro","-4.0305","5.332"],"KOR":["Korea, Rep.","Seoul","126.957","37.5323"],"ENG":["United Kingdom","London","-0.126236","51.5002"]}
+{
+  "CAN": [
+    "Canada",
+    "Ottawa",
+    "-75.6919",
+    "45.4215"
+  ],
+  "USA": [
+    "United States",
+    "Washington D.C.",
+    "-77.032",
+    "38.8895"
+  ],
+  "MEX": [
+    "Mexico",
+    "Mexico City",
+    "-99.1276",
+    "19.427"
+  ],
+  "CRC": [
+    "Costa Rica",
+    "San Jose",
+    "-84.0089",
+    "9.63701"
+  ],
+  "COL": [
+    "Colombia",
+    "Bogota",
+    "-74.082",
+    "4.60987"
+  ],
+  "ECU": [
+    "Ecuador",
+    "Quito",
+    "-78.5243",
+    "-0.229498"
+  ],
+  "BRA": [
+    "Brazil",
+    "Brasilia",
+    "-47.9292",
+    "-15.7801"
+  ],
+  "FRA": [
+    "France",
+    "Paris",
+    "2.35097",
+    "48.8566"
+  ],
+  "ESP": [
+    "Spain",
+    "Madrid",
+    "-3.70327",
+    "40.4167"
+  ],
+  "NOR": [
+    "Norway",
+    "Oslo",
+    "10.7387",
+    "59.9138"
+  ],
+  "SWE": [
+    "Sweden",
+    "Stockholm",
+    "18.0645",
+    "59.3327"
+  ],
+  "NED": [
+    "Netherlands",
+    "Amsterdam",
+    "4.89095",
+    "52.3738"
+  ],
+  "CMR": [
+    "Cameroon",
+    "Yaounde",
+    "11.5174",
+    "3.8721"
+  ],
+  "JPN": [
+    "Japan",
+    "Tokyo",
+    "139.77",
+    "35.67"
+  ],
+  "SUI": [
+    "Switzerland",
+    "Bern",
+    "7.44821",
+    "46.948"
+  ],
+  "NGA": [
+    "Nigeria",
+    "Abuja",
+    "7.48906",
+    "9.05804"
+  ],
+  "GER": [
+    "Germany",
+    "Berlin",
+    "13.4115",
+    "52.5235"
+  ],
+  "CHN": [
+    "China",
+    "Beijing",
+    "116.286",
+    "40.0495"
+  ],
+  "THA": [
+    "Thailand",
+    "Bangkok",
+    "100.521",
+    "13.7308"
+  ],
+  "NZL": [
+    "New Zealand",
+    "Wellington",
+    "174.776",
+    "-41.2865"
+  ],
+  "AUS": [
+    "Australia",
+    "Canberra",
+    "149.129",
+    "-35.282"
+  ],
+  "CIV": [
+    "Cote d'Ivoire",
+    "Yamoussoukro",
+    "-4.0305",
+    "5.332"
+  ],
+  "KOR": [
+    "Korea, Rep.",
+    "Seoul",
+    "126.957",
+    "37.5323"
+  ],
+  "ENG": [
+    "United Kingdom",
+    "London",
+    "-0.126236",
+    "51.5002"
+  ]
+}
