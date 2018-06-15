@@ -9,7 +9,6 @@ var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCT
 
 if (!isProduction) {
   var twitKeys = require("./config/keys");
-  console.log(twitKeys)
   var T = new twit({
     consumer_key: twitKeys.GB_KEY,
     consumer_secret: twitKeys.GB_SECRET,

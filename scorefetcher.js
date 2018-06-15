@@ -192,7 +192,7 @@ var runCustomTestFiles = function() {
   });
 };
 
-var isProduction = JSON.parse(process.env.IS_PRODUCTION);
+var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCTION) : false;
 
 if (!isProduction) {
   // RUN WITH TEST FILES:

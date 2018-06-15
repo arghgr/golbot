@@ -116,7 +116,7 @@ var checkIfMatch = function(file) {
 var testFile1 = path.join(__dirname + '/test_files/examplex_currentx.json');
 var testFile2 = path.join(__dirname + '/test_files/examplex_currenty.json');
 
-var isProduction = JSON.parse(process.env.IS_PRODUCTION);
+var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCTION) : false;
 
 if (isProduction == true) {
   // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
