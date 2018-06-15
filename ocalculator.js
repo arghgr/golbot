@@ -111,7 +111,7 @@ var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCT
 
 if (!isProduction) {
   // Tests:
-  for (var country in latinAmData.bg) oCalc(country);
+  // for (var country in latinAmData.bg) oCalc(country);
 }
 
 exports.oCalc = oCalc;

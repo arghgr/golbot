@@ -5,14 +5,25 @@ var twit = require("twit");
 
 var o = require("./ocalculator");
 
-var isProduction = JSON.parse(process.env.IS_PRODUCTION);
+var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCTION) : false;
 
-var T = new twit({
-  consumer_key: process.env.GB_KEY,
-  consumer_secret: process.env.GB_SECRET,
-  access_token: process.env.GB_TOKEN,
-  access_token_secret: process.env.GB_TOKEN_SECRET
-});
+if (!isProduction) {
+  var twitKeys = require("./config/keys");
+  console.log(twitKeys)
+  var T = new twit({
+    consumer_key: twitKeys.GB_KEY,
+    consumer_secret: twitKeys.GB_SECRET,
+    access_token: twitKeys.GB_TOKEN,
+    access_token_secret: twitKeys.GB_TOKEN_SECRET
+  });
+} else {
+  var T = new twit({
+    consumer_key: process.env.GB_KEY,
+    consumer_secret: process.env.GB_SECRET,
+    access_token: process.env.GB_TOKEN,
+    access_token_secret: process.env.GB_TOKEN_SECRET
+  });
+}
 
 var postTweet = function(tweet) {
   console.log("Posting Tweet");
