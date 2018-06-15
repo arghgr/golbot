@@ -1,4 +1,5 @@
 var fs = require("fs");
+var _ = require("underscore");
 var haversine = require("haversine");
 
 // O CALCULATOR
@@ -10,110 +11,107 @@ var haversine = require("haversine");
 // 2. The number of players on the team who have Latin American or Hispanic backgrounds
 // 3. The number of players on the team who play for Latin American or Hispanic clubs
 // Hispanic here refers to Spanish-speaking or formerly Spanish areas, so for
-// these purposes, Spain, Brazil, and the Philippines are included, but not Portugal.
+// these purposes, Spain and the Philippines are included, but not Portugal.
 
-var teamCapitals = {};
-var teamDistances = {};
-var latinAmBg = {};
-var latinAmClubs = {};
-var furthest = 0;
-var closest = 1000;
-var cuiaba = {
-  latitude: -15.595833,
-  longitude: -56.096944
-};
+var latinAmData = {};
 
-var fifaCapitalsData = fs.readFileSync("generated_files/fifa_data.json", { encoding: "utf-8" }, function(error, data) {
+var fifa_data = null;
+fifa_data = fs.readFileSync("generated_files/fifa_data.json", { encoding: "utf-8" }, function(error, data) {
     if (error) throw error;
     return data;
 });
 
-var latinAmData = fs.readFileSync("data_files/latin_am_data.json", { encoding: "utf-8" }, function(error, data) {
+var latin_am_data = null;
+latin_am_data = fs.readFileSync("data_files/latin_am_data.json", { encoding: "utf-8" }, function(error, data) {
     if (error) throw error;
     return data;
 });
 
-var parseCapitals = function() {
-  var fifaCapitals = JSON.parse(fifaCapitalsData);
-  for (var key in fifaCapitals) {
-    var value = fifaCapitals[key];
+var parseCapitals = function(fifa_data) {
+  var fifaData = JSON.parse(fifa_data);
+  var teamCapitals = {};
+  var value = null;
+  for (var key in fifaData) {
+    value = fifaData[key];
     teamCapitals[key] = {
       latitude: value[3],
       longitude: value[2]
     };
   }
+  return teamCapitals;
 };
 
-var calculateDistances = function() {
+var calculateDistances = function(teamCapitals) {
   var capitalCoords = null;
   var distance = null;
+  var teamDistances = {};
+  var cuiaba = {
+    latitude: -15.595833,
+    longitude: -56.096944
+  };
   for (var capital in teamCapitals) {
     capitalCoords = teamCapitals[capital];
     distance = Math.round(haversine(capitalCoords, cuiaba, { unit: 'km' }));
     teamDistances[capital] = distance;
-    if (distance > furthest) { furthest = distance; }
-    if (distance < closest) { closest = distance; }
   }
+  return teamDistances;
 };
 
 var getDistanceScore = function(team_code) {
   console.log(team_code);
+  var scoreMax = 10;
   var distance = teamDistances[team_code];
-  var score = Math.round((distance * 10 - closest * 10)/(closest - furthest)) + 10;
-  if (team_code == "MEX") { score += 1; }
-  return score;
+  var furthest = teamDistances[_.max(Object.keys(teamDistances), function(d) { return teamDistances[d]; })];
+  var closest = teamDistances[_.min(Object.keys(teamDistances), function(d) { return teamDistances[d]; })];
+  var distanceScore = Math.abs(Math.ceil(scoreMax - (scoreMax * (distance / (furthest - closest || 1)))));
+  if (team_code == "MEX") { distanceScore += 1; }
+  return distanceScore;
 };
 
-var parseLatinAmData = function() {
-  var data = JSON.parse(latinAmData);
-  latinAmBg = data["background"];
-  latinAmClubs = data["clubs"];
+var parseLatinAmData = function(la_data) {
+  var data = JSON.parse(la_data);
+  var latinAmBg = data["background"];
+  var latinAmClubs = data["clubs"];
+  return {
+    bg: latinAmBg,
+    clubs: latinAmClubs
+  }
 };
 
-var getLatinAmScore = function(team_code) {
-  var bg = (latinAmBg[team_code] / 23 * 10);
-  var clubs = (latinAmClubs[team_code] / 23 * 10);
-  var score = Math.round(bg + clubs);
-  return score;
+var getBgClubScore = function(team_code, latinAmBg, latinAmClubs) {
+  var scoreMax = 10;
+  var teamSize = 23;
+  var bgScore = ((latinAmBg[team_code] * scoreMax) / teamSize);
+  console.log("bgScore: " + bgScore);
+  var clubScore = ((latinAmClubs[team_code] * scoreMax) / teamSize);
+  console.log("clubScore: " + clubScore);
+  var bgClubScore = Math.ceil(bgScore + clubScore);
+  return bgClubScore;
 };
 
 var oCalc = function(team_code) {
   console.log("\n000000 CALCULATING Os 000000");
-  var o_number = 10;
+  var o_number = 1;
   var distanceScore = getDistanceScore(team_code);
-  var latinAmScore = getLatinAmScore(team_code);
-  o_number = distanceScore + latinAmScore;
+  console.log("distanceScore: " + distanceScore);
+  var bgClubScore = getBgClubScore(team_code, latinAmData.bg, latinAmData.clubs);
+  o_number = distanceScore + bgClubScore;
   console.log("number of Os: " + o_number);
   console.log("0000000000000000000000000000");
   return o_number;
 };
 
-parseCapitals();
-calculateDistances();
-parseLatinAmData();
+var teamCapitals = parseCapitals(fifa_data);
+var teamDistances = calculateDistances(teamCapitals);
+latinAmData["bg"] = parseLatinAmData(latin_am_data).bg;
+latinAmData["clubs"] = parseLatinAmData(latin_am_data).clubs;
 
-var isProduction = JSON.parse(process.env.IS_PRODUCTION);
+
+var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCTION) : false;
 
 if (!isProduction) {
   // Tests:
-  // oCalc("BRA");
-  // oCalc("URU");
-  // oCalc("ARG");
-  // oCalc("CRC");
-  // oCalc("MEX");
-  // oCalc("USA");
-  // // oCalc("ESP");
-  // oCalc("NGA");
-  // oCalc("FRA");
-  // oCalc("SUI");
-  // oCalc("ALG");
-  // oCalc("GER");
-  // // oCalc("AUS");
-  // // oCalc("JPN");
-  // // oCalc("KOR");
-  // for (var country in latinAmBg) {
-  //   oCalc(country);
-  // }
+  for (var country in latinAmData.bg) oCalc(country);
 }
 
 exports.oCalc = oCalc;
