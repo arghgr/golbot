@@ -10,8 +10,6 @@ Much thanks to:
 * https://en.wikipedia.org/wiki/FIFA_World_Cup
 * http://api.football-data.org
 
-======
-
 ### Documentation
 
 1. Move outdated ./generated_files and ./data_files into ./past/[year]
