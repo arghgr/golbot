@@ -13,11 +13,11 @@
     "npm": "6.1.0"
   },
   "dependencies": {
-    "twit": "latest",
-    "express": "latest",
-    "request": "latest",
-    "cheerio": "latest",
-    "underscore": "latest",
-    "haversine": "latest"
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.3",
+    "haversine": "^1.1.0",
+    "request": "^2.87.0",
+    "twit": "^2.2.10",
+    "underscore": "^1.9.1"
   }
 }
