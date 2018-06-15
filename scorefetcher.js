@@ -196,7 +196,7 @@ var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCT
 
 if (!isProduction) {
   // RUN WITH TEST FILES:
-  runTestFiles();
+  // runTestFiles();
   // runCustomTestFiles();
   // scrapeCurrent(testFile_y);
 
