@@ -19,7 +19,7 @@ var latinAmData = {
 var generateTeamsDataObj = function(fileData) {
   if (fileData) {
     teams_data = fs.readFileSync(fileData, { encoding: "utf-8" }, function(error, data) {
-      if (error) { console.log(error); }
+      if (error) { console.error("generateTeamsDataObj error: ", error); }
       return data;
     });
   };
@@ -31,9 +31,7 @@ var generateTeamsDataObj = function(fileData) {
     // Default fill clubs with all 23 players if country is in Latin America:
     latinAmData["clubs"][fifaCode] = (fifaData[fifaCode][4] === true) ? 23 : 0;
   });
-  // console.log("sortedFifaCodes: ", sortedFifaCodes)
-  // console.log("sortedFifaCodes size: " + _.size(sortedFifaCodes));
-  console.log(latinAmData);
+  console.log("generateTeamsDataObj latinAmData: ", latinAmData);
 };
 
 var generateLatinAmDataFile = function(latinAmData) {

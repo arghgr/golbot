@@ -40,7 +40,7 @@ var getMatches = function(file = null) {
     var date = datetime.toJSON().substr(0,10);
     var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - 3;
     if (hour < 0) { hour += 24; }
-    // console.log("current: " + date + " " + hour + "h");
+    console.log("current: " + date + " " + hour + "h");
     if (matchesData.length > 0) {
       var doScrape = false;
       for (i = 0; i < matchesData.length; i++) {

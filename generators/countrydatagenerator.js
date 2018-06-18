@@ -45,7 +45,7 @@ var parseCountriesData = function(countries_path) {
   var countries = {};
   if (!countries_path) throw Error;
   countries_data = fs.readFileSync(countries_path, { encoding: "utf-8" }, function(error, data) {
-    if (error) { console.log(error); }
+    if (error) { console.error("parseCountriesData error: ", error); }
     return data;
   });
   var countriesData = JSON.parse(countries_data)[1];
@@ -103,7 +103,7 @@ var parseTeamsData = function(teams_path) {
   var teams = {};
   if (!teams_path) throw Error;
   teams_data = fs.readFileSync(teams_path, { encoding: "utf-8" }, function(error, data) {
-    if (error) { console.log(error); }
+    if (error) { console.error("parseTeamsData error: ", error); }
     return data;
   });
   var teamsData = JSON.parse(teams_data);
@@ -113,7 +113,7 @@ var parseTeamsData = function(teams_path) {
     } else if (team.code && team.name) { // api.football-data.org format
       teams[team.code] = team.name;
     } else {
-      console.log("What format are these teams in?")
+      console.error("What format are these teams in?")
     }
   });
   return teams;

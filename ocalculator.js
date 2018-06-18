@@ -58,7 +58,6 @@ var calculateDistances = function(teamCapitals) {
 };
 
 var getDistanceScore = function(team_code) {
-  console.log(team_code);
   var scoreMax = 10;
   var distance = teamDistances[team_code];
   var furthest = teamDistances[_.max(Object.keys(teamDistances), function(d) { return teamDistances[d]; })];
