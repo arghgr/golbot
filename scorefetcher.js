@@ -13,7 +13,7 @@ var tweeter = require("./tweeter");
 var matches = [];
 
 function Match(matchData) {
-  this.match_number = matchData.match_number;
+  this.fifa_id = matchData.fifa_id;
   this.lastMatchData = null;
   this.currentMatchData = matchData;
   this.lastGolEvent_home = null;
@@ -55,19 +55,19 @@ var scrapeCurrent = function(file, callback) {
       matchesData.forEach(function(matchData) {
         var matchExists = null;
         for (i = 0; i < matches.length; i++) {
-          if (matchData.match_number == matches[i].match_number) {
+          if (matchData.fifa_id == matches[i].fifa_id) {
             matchExists = i;
-            console.log("\nfound match_number " + matchData.match_number + " in matches[" + matchExists + "]");
+            console.log("\nfound fifa_id " + matchData.fifa_id + " in matches[" + matchExists + "]");
             break;
           }
         }
         if (matchExists == null) {
-          console.log("\nadded match #" + matchData.match_number + " to matches");
+          console.log("\nadded match #" + matchData.fifa_id + " to matches");
           var match = new Match(matchData);
           matches.push(match);
           parseData(match);
         } else {
-          console.log("updating matches[" + matchExists + "], which is match #" + matchData.match_number);
+          console.log("updating matches[" + matchExists + "], which is match #" + matchData.fifa_id);
           var match = matches[matchExists];
           match.lastMatchData = match.currentMatchData;
           match.currentMatchData = matchData;
@@ -88,7 +88,7 @@ var scrapeCurrent = function(file, callback) {
     var away_newEvents = [];
     if (currentMatchData) {
       console.log("***************************");
-      console.log(currentMatchData.match_number + " (" + currentMatchData.status + ")" );
+      console.log(currentMatchData.fifa_id + " (" + currentMatchData.status + ")" );
       console.log(currentMatchData.home_team.code + " : "
         + currentMatchData.home_team.goals);
       console.log(currentMatchData.away_team.code + " : "
@@ -98,7 +98,7 @@ var scrapeCurrent = function(file, callback) {
         checkForGol(currentMatchData, lastMatchData);
         checkForShootout(currentMatchData, lastMatchData);
       } else {
-        console.log("no lastMatchData for #" + currentMatchData.match_number);
+        console.log("no lastMatchData for #" + currentMatchData.fifa_id);
       }
     }
   };
