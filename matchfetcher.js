@@ -70,22 +70,16 @@ var getMatches = function(file = null) {
   };
 };
 
-var checkIfMatch = function(file) {
+var checkIfMatch = function(file, scrapeStart = 55, scrapeEnd = 10) {
   var datetime = new Date();
   var minutes = datetime.getMinutes();
   var date = datetime.toJSON().substr(0,10);
   var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - 3;
   if (hour < 0) { hour += 24; }
   // Checks for matches in the last five minutes and first ten minutes of every hour
-  if (minutes >= 55 || minutes <= 10) {
-    // console.log("now: " + date + " " + hour + "h " + minutes + "m");
-    // console.log("scraping in progress? " + scraper);
-    if (!scraper) {
-      // console.log("checking matches");
-      if (file) { getMatches(file); } else { getMatches(); }
-    } else {
-      console.log("scraping already in progress");
-    }
+  // console.log("now: " + date + " " + hour + "h " + minutes + "m");
+  if ((minutes >= scrapeStart || minutes <= scrapeEnd) && (!scraper)) {
+    getMatches(file);
   }
 };
 
@@ -119,7 +113,7 @@ if (isProduction == true) {
   console.log("ping_interval? " + ping_interval);
   // getMatches(testFile1);
   var test = setInterval(function() {
-    checkIfMatch();
+    checkIfMatch(null, scrapeStart = 0, scrapeEnd = 0);
   }, ping_interval);
 } else {
   console.log("no isProduction");
