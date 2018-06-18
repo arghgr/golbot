@@ -44,11 +44,11 @@ var getMatches = function(file = null) {
     if (matchesData.length > 0) {
       var doScrape = false;
       for (i = 0; i < matchesData.length; i++) {
-        if (matchesData[i].datetime.length == 29) {
+        if (matchesData[i].datetime.length == 20 || matchesData[i].datetime.length == 29) {
           var matchDate = matchesData[i].datetime.substr(0,10);
           var matchHour = parseInt(matchesData[i].datetime.substr(11,13), 10);
-          // console.log("match at: " + matchDate + " " + matchHour + "h");
-          var matchEnd = matchHour + 2;
+          console.log("match at: " + matchDate + " " + matchHour + "h");
+          var matchEnd = matchHour + 3; // Assumes games are 3 hours max
           if (date == matchDate) {
             if (hour >= matchHour && hour < matchEnd) {
               console.log("GAME TIME");
