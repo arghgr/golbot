@@ -27,13 +27,14 @@ if (!isProduction) {
 var postTweet = function(tweet) {
   console.log("Posting Tweet");
   var statusUpdate = tweet;
-  T.post("statuses/update", { status: statusUpdate }, function(err, reply) {
-    if (err) {
-        console.dir(err);
-    } else {
-        console.dir(reply);
-    }
-  });
+  try {
+    T.post("statuses/update", { status: statusUpdate }, function(err, reply) {
+      if (err) throw err;
+      console.dir(reply);
+    });
+  } catch (error) {
+    console.error("postTweet error: ", error)
+  }
 };
 
 var penaltyTweet = function(team_code, penalties) {
@@ -49,7 +50,7 @@ var penaltyTweet = function(team_code, penalties) {
   var tweet = gols + "\n#" + team_code + " wins in penalty shoot-out" + bang;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
-  if (isProduction) { postTweet(tweet); }
+  postTweet(tweet);
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 
@@ -66,7 +67,7 @@ var ownGolTweet = function(team_code, opponent_code, gol_event) {
     + "\nown gol by #" + team_code + "'s " + gol_event.player + " in minute " + time_string;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
-  if (isProduction) { postTweet(tweet); }
+  postTweet(tweet);
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 
@@ -82,7 +83,7 @@ var golTweet = function(team_code, gol_event) {
   var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + time_string;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(tweet);
-  if (isProduction) { postTweet(tweet); }
+  postTweet(tweet);
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 
