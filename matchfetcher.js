@@ -5,6 +5,7 @@ var request = require("request");
 var _ = require("underscore");
 
 var scorefetcher = require("./scorefetcher");
+var runScraper = require("./utils").runScraper;
 
 // MATCH CHECKER
 // Every hour, checks whether a match is in progress
@@ -27,33 +28,12 @@ var endScraper = function() {
   }, match_length);
 };
 
-var getMatches = function(file) {
-  if (file) {
-    fs.readFile(file, { encoding: "utf-8" }, function(error, data) {
-      if(!error){
-        var $ = cheerio.load(data);
-        var matchesData = JSON.parse(data);
-        checkMatchTimes(matchesData);
-      } else {
-        console.log(error);
-      }
-    });
-  } else {
-    request({
-      url: "http://worldcup.sfg.io/matches/today",
-      headers: {
-        "User-Agent": "worldcupgolbot by @arghgr"
-      }
-    }, function(error, response, data){
-      if(!error){
-        var $ = cheerio.load(data);
-        var matchesData = JSON.parse(data);
-        checkMatchTimes(matchesData);
-      } else {
-        console.log(error);
-      }
-    });
-  }
+var getMatches = function(file = null) {
+  runScraper({
+    file: file,
+    url: "http://worldcup.sfg.io/matches/today",
+    parseCallback: checkMatchTimes
+  });
 
   var checkMatchTimes = function(matchesData) {
     var datetime = new Date();
