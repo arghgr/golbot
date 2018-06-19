@@ -76,6 +76,7 @@ var checkIfMatch = function(file, scrapeStart = 55, scrapeEnd = 10) {
   var seconds = datetime.getSeconds();
   var date = datetime.toJSON().substr(0,10);
   var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - 3;
+  if (!isProduction) hour = hour + 3;
   var dateString = date + " " + hour + "h " + minutes + "m " + seconds + "s";
   if (hour < 0) { hour += 24; }
   // Checks for matches in the last five minutes and first ten minutes of every hour
