@@ -95,7 +95,7 @@ var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCT
 if (isProduction == true) {
   // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
   var scoreCheck_freq = 1000 * 20; // Scrape every twenty seconds
-  var match_length = 1000 * 60 * 60 * 3; // Keep scraper running for 3 hours
+  var match_length = 1000 * 60 * 60 * 2.5; // Keep scraper running for 2.5 hours
   var ping_interval = 1000 * 60; // Check time every minute
 
   console.log("timestamp: " + new Date());
@@ -118,9 +118,9 @@ if (isProduction == true) {
   console.log("match_length? " + match_length);
   console.log("ping_interval? " + ping_interval);
   // getMatches(testFile1);
-  // var test = setInterval(function() {
-  //   checkIfMatch(null, scrapeStart = 0, scrapeEnd = 0);
-  // }, ping_interval);
+  var test = setInterval(function() {
+    checkIfMatch(null, scrapeStart = 0, scrapeEnd = 0);
+  }, ping_interval);
 } else {
   console.log("no isProduction");
 }
