@@ -30,7 +30,7 @@ var scrapeCurrent = function(file, callback) {
         for (i = 0; i < matches.length; i++) {
           if (matchData.fifa_id == matches[i].fifa_id) {
             matchExists = i;
-            console.log("\nfound fifa_id " + matchData.fifa_id + " in matches[" + matchExists + "]");
+            // if (!isProduction) console.log("\nfound fifa_id " + matchData.fifa_id + " in matches[" + matchExists + "]");
             break;
           }
         }
@@ -40,7 +40,7 @@ var scrapeCurrent = function(file, callback) {
           matches.push(match);
           parseData(match);
         } else {
-          console.log("updating matches[" + matchExists + "], which is match #" + matchData.fifa_id);
+          // if (!isProduction) console.log("updating matches[" + matchExists + "], which is match #" + matchData.fifa_id);
           var match = matches[matchExists];
           match.lastMatchData = match.currentMatchData;
           match.currentMatchData = matchData;
@@ -60,16 +60,18 @@ var scrapeCurrent = function(file, callback) {
     var home_newEvents = [];
     var away_newEvents = [];
     if (currentMatchData) {
-      console.log("***************************");
-      console.log(currentMatchData.fifa_id + " (" + currentMatchData.status + ")" );
-      console.log(currentMatchData.home_team.code + " : "
-        + currentMatchData.home_team.goals);
-      console.log(currentMatchData.away_team.code + " : "
-        + currentMatchData.away_team.goals);
-      console.log("***************************");
       if (lastMatchData) {
-        checkForGol(currentMatchData, lastMatchData);
-        checkForShootout(currentMatchData, lastMatchData);
+        if (currentMatchData.toString() !== lastMatchData.toString()) {
+          console.log("***************************");
+          console.log(currentMatchData.fifa_id + " (" + currentMatchData.status + ")" );
+          console.log(currentMatchData.home_team.code + " : "
+            + currentMatchData.home_team.goals);
+          console.log(currentMatchData.away_team.code + " : "
+            + currentMatchData.away_team.goals);
+          console.log("***************************");
+          checkForGol(currentMatchData, lastMatchData);
+          checkForShootout(currentMatchData, lastMatchData);
+        }
       } else {
         console.log("no lastMatchData for #" + currentMatchData.fifa_id);
       }
