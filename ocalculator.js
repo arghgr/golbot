@@ -58,7 +58,7 @@ var calculateDistances = function(teamCapitals) {
 };
 
 var getDistanceScore = function(team_code) {
-  var scoreMax = 10;
+  var scoreMax = 20;
   var distance = teamDistances[team_code];
   var furthest = teamDistances[_.max(Object.keys(teamDistances), function(d) { return teamDistances[d]; })];
   var closest = teamDistances[_.min(Object.keys(teamDistances), function(d) { return teamDistances[d]; })];
@@ -78,7 +78,7 @@ var parseLatinAmData = function(la_data) {
 };
 
 var getBgClubScore = function(team_code, latinAmBg, latinAmClubs) {
-  var scoreMax = 10;
+  var scoreMax = 20;
   var teamSize = 23;
   var bgScore = ((latinAmBg[team_code] * scoreMax) / teamSize);
   console.log("bgScore: " + bgScore);
@@ -89,7 +89,7 @@ var getBgClubScore = function(team_code, latinAmBg, latinAmClubs) {
 };
 
 var oCalc = function(team_code) {
-  console.log("\n000000 CALCULATING Os 000000");
+  console.log("\n00 CALCULATING Os for " + team_code + " 00");
   var o_number = 1;
   var distanceScore = getDistanceScore(team_code);
   console.log("distanceScore: " + distanceScore);
