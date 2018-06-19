@@ -81,22 +81,22 @@ var getBgClubScore = function(team_code, latinAmBg, latinAmClubs) {
   var scoreMax = 20;
   var teamSize = 23;
   var bgScore = ((latinAmBg[team_code] * scoreMax) / teamSize);
-  console.log("bgScore: " + bgScore);
+  if (!isProduction) console.log("bgScore: " + bgScore);
   var clubScore = ((latinAmClubs[team_code] * scoreMax) / teamSize);
-  console.log("clubScore: " + clubScore);
+  if (!isProduction) console.log("clubScore: " + clubScore);
   var bgClubScore = Math.ceil(bgScore + clubScore);
   return bgClubScore;
 };
 
 var oCalc = function(team_code) {
-  console.log("\n00 CALCULATING Os for " + team_code + " 00");
+  if (!isProduction) console.log("\n00 CALCULATING Os for " + team_code + " 00");
   var o_number = 1;
   var distanceScore = getDistanceScore(team_code);
-  console.log("distanceScore: " + distanceScore);
+  if (!isProduction) console.log("distanceScore: " + distanceScore);
   var bgClubScore = getBgClubScore(team_code, latinAmData.bg, latinAmData.clubs);
   o_number = distanceScore + bgClubScore;
-  console.log("number of Os: " + o_number);
-  console.log("0000000000000000000000000000");
+  if (!isProduction) console.log("number of Os: " + o_number);
+  if (!isProduction) console.log("0000000000000000000000000000");
   return o_number;
 };
 

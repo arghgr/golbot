@@ -106,8 +106,8 @@ if (isProduction == true) {
   }, ping_interval);
 } else if (isProduction == false) {
   // RUN WITH TEST DATA AND SCRAPE SPEEDS
-  var scoreCheck_freq = 1000 * 5;
-  var match_length = 1000 * 30;
+  var scoreCheck_freq = 1000 * 20;
+  var match_length = 1000 * 60 * 10;
   var ping_interval = 1000 * 10;
 
   console.log("isProduction? " + isProduction);
@@ -115,9 +115,9 @@ if (isProduction == true) {
   console.log("match_length? " + match_length);
   console.log("ping_interval? " + ping_interval);
   // getMatches(testFile1);
-  var test = setInterval(function() {
-    checkIfMatch(null, scrapeStart = 0, scrapeEnd = 0);
-  }, ping_interval);
+  // var test = setInterval(function() {
+  //   checkIfMatch(null, scrapeStart = 0, scrapeEnd = 0);
+  // }, ping_interval);
 } else {
   console.log("no isProduction");
 }

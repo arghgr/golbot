@@ -163,9 +163,9 @@ var runTestFiles = function() {
   });
 };
 
-var testFile_a = path.join(__dirname + '/test_files/examplex_currentx.json');
-var testFile_b = path.join(__dirname + '/test_files/examplex_currenty.json');
-var testFile_c = path.join(__dirname + '/test_files/examplex_currentz.json');
+var testFile_a = path.join(__dirname + '/test_files/20180619currentCOLvJPN1.json');
+var testFile_b = path.join(__dirname + '/test_files/20180619currentCOLvJPN2.json');
+var testFile_c = path.join(__dirname + '/test_files/20180619currentCOLvJPN3.json');
 var runCustomTestFiles = function() {
   scrapeCurrent(testFile_a, function() {
     scrapeCurrent(testFile_b, function() {

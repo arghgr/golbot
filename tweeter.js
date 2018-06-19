@@ -25,7 +25,6 @@ if (!isProduction) {
 }
 
 var postTweet = function(tweet) {
-  console.log("Posting Tweet");
   var statusUpdate = tweet;
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   console.log(statusUpdate);
