@@ -35,18 +35,21 @@ var getMatches = function(file = null) {
     var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - 3;
     if (hour < 0) { hour += 24; }
     if (!isProduction) hour = hour + 3;
-    console.log("current: " + date + " " + hour + "h");
+    if (!isProduction) console.log("current: " + date + " " + hour + "h");
     if (matchesData.length > 0) {
       var doScrape = false;
       for (i = 0; i < matchesData.length; i++) {
         if (matchesData[i].datetime.length == 20 || matchesData[i].datetime.length == 29) {
           var matchDate = matchesData[i].datetime.substr(0,10);
           var matchHour = parseInt(matchesData[i].datetime.substr(11,13), 10);
-          console.log("match at: " + matchDate + " " + matchHour + "h");
+          if (!isProduction) console.log("match at: " + matchDate + " " + matchHour + "h");
           var matchEnd = matchHour + 3; // Assumes games are 3 hours max
           if (date == matchDate) {
             if (hour >= matchHour && hour < matchEnd) {
-              console.log("GAME TIME");
+              if (!scraper) {
+                console.log("now: " + date + " " + hour + "h");
+                console.log("GAME TIME");
+              }
               doScrape = true;
               break;
             }
@@ -55,7 +58,6 @@ var getMatches = function(file = null) {
       }
       if (doScrape) {
         if (scraper) { clearInterval(scraper); }
-        console.log("scraper started");
         startScraper();
         endScraper();
       }
