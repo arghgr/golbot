@@ -48,7 +48,7 @@ var scrapeCurrent = function(file, callback) {
         }
       });
     } else {
-      console.log("no matches in progress");
+      if (!isProduction) console.log("no matches in progress");
     }
     if (callback) { callback(); }
   };
@@ -69,7 +69,7 @@ var scrapeCurrent = function(file, callback) {
               + currentMatchData.home_team.goals);
             console.log(currentMatchData.away_team.code + " : "
               + currentMatchData.away_team.goals);
-            console.log("***************************");  
+            console.log("***************************");
           }
           checkForGol(currentMatchData, lastMatchData);
           checkForShootout(currentMatchData, lastMatchData);
