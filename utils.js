@@ -10,7 +10,8 @@ var runScraper = function({
     var parseData = function(data) {
       var parsedData = data;
       try {
-        if (data.substr(0,6) === 'jQuery') {
+        var isWrapped = data.indexOf("(");
+        if (isWrapped > -1) { // Just in case it's a JSONP function
           parsedData = data.split("(").pop().split(")")[0];
         }
         parsedData = JSON.parse(parsedData);
