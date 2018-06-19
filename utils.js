@@ -15,8 +15,7 @@ var runScraper = function({
         }
         parsedData = JSON.parse(parsedData);
       } catch (err) {
-        console.err("err parseData: ", parsedData);
-        throw "parseData err: " + err;
+        console.error("parseData err: ", err);
       }
       return parsedData;
     }
@@ -40,8 +39,8 @@ var runScraper = function({
         if (parseCallback) parseCallback(parsedData);
       });
     }
-  } catch(error) {
-    console.error("scraper error: ", error);
+  } catch (error) {
+    console.error("runScraper error: ", error);
   }
 }
 
