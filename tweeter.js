@@ -87,6 +87,22 @@ var golTweet = function(team_code, gol_event) {
   console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 
+if (!isProduction) {
+  // Tests:
+  // golTweet("TUN", {
+  //   id: 193,
+  //   type_of_event: "goal-penalty",
+  //   player: "Ferjani SASSI",
+  //   time: "35'"
+  // });
+  // ownGolTweet("NGA", "CRO", {
+  //   id: 81,
+  //   type_of_event: "goal-own",
+  //   player: "Oghenekaro ETEBO",
+  //   time: "32'"
+  // });
+}
+
 exports.golTweet = golTweet;
 exports.ownGolTweet = ownGolTweet;
 exports.penaltyTweet = penaltyTweet;
