@@ -61,14 +61,16 @@ var scrapeCurrent = function(file, callback) {
     var away_newEvents = [];
     if (currentMatchData) {
       if (lastMatchData) {
-        if (currentMatchData.toString() !== lastMatchData.toString()) {
-          console.log("***************************");
-          console.log(currentMatchData.fifa_id + " (" + currentMatchData.status + ")" );
-          console.log(currentMatchData.home_team.code + " : "
-            + currentMatchData.home_team.goals);
-          console.log(currentMatchData.away_team.code + " : "
-            + currentMatchData.away_team.goals);
-          console.log("***************************");
+        if (!_.isEqual(currentMatchData, lastMatchData)) {
+          if (!isProduction) {
+            console.log("***************************");
+            console.log(currentMatchData.fifa_id + " (" + currentMatchData.status + ")" );
+            console.log(currentMatchData.home_team.code + " : "
+              + currentMatchData.home_team.goals);
+            console.log(currentMatchData.away_team.code + " : "
+              + currentMatchData.away_team.goals);
+            console.log("***************************");  
+          }
           checkForGol(currentMatchData, lastMatchData);
           checkForShootout(currentMatchData, lastMatchData);
         }
