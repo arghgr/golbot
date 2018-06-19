@@ -32,10 +32,9 @@ var getMatches = function(file = null) {
   var checkMatchTimes = function(matchesData) {
     var datetime = new Date();
     var date = datetime.toJSON().substr(0,10);
-    var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - 3;
+    var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - (isProduction ? 0 : 3);  // My servers are behind the API I'm scraping by 3 hours
     if (hour < 0) { hour += 24; }
-    if (!isProduction) hour = hour + 3;
-    if (!isProduction) console.log("current: " + date + " " + hour + "h");
+    console.log("current: " + date + " " + hour + "h");
     if (matchesData.length > 0) {
       var doScrape = false;
       for (i = 0; i < matchesData.length; i++) {
@@ -99,6 +98,7 @@ if (isProduction == true) {
   var match_length = 1000 * 60 * 60 * 3; // Keep scraper running for 3 hours
   var ping_interval = 1000 * 60; // Check time every minute
 
+  console.log("timestamp: " + new Date());
   console.log("isProduction? " + isProduction);
   console.log("scoreCheck_freq? " + scoreCheck_freq);
   console.log("match_length? " + match_length);
@@ -112,6 +112,7 @@ if (isProduction == true) {
   var match_length = 1000 * 60 * 10;
   var ping_interval = 1000 * 10;
 
+  console.log("timestamp: " + new Date());
   console.log("isProduction? " + isProduction);
   console.log("scoreCheck_freq? " + scoreCheck_freq);
   console.log("match_length? " + match_length);
