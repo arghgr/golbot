@@ -27,13 +27,20 @@ if (!isProduction) {
 var postTweet = function(tweet) {
   console.log("Posting Tweet");
   var statusUpdate = tweet;
+  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+  console.log(statusUpdate);
+  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
   try {
     T.post("statuses/update", { status: statusUpdate }, function(err, reply) {
-      if (err) throw err;
-      console.dir(reply);
+      try {
+        if (err || !reply.id_str || !reply.created_at) throw err;
+        console.log("postTweet id: " + reply.id_str + " | created_at: " + reply.created_at);
+      } catch (e) {
+        console.error("postTweet e: ", e.message || e);
+      }
     });
   } catch (error) {
-    console.error("postTweet error: ", error)
+    console.error("postTweet error: ", error);
   }
 };
 
@@ -48,43 +55,34 @@ var penaltyTweet = function(team_code, penalties) {
     var bang = "!";
   }
   var tweet = gols + "\n#" + team_code + " wins in penalty shoot-out" + bang;
-  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
-  console.log(tweet);
   postTweet(tweet);
-  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 
 var ownGolTweet = function(team_code, opponent_code, gol_event) {
   var o_number = o.oCalc(opponent_code);
+  var ay_number = o.oCalc(team_code);
+  var gol = "GOL";
+  var ay = "AY";
   if (o_number) {
-    var gol = "G" + Array(o_number + 1).join("O") + "L";
-  } else {
-    var gol = "GOL";
+    gol = "G" + Array(o_number + 1).join("O") + "L";
   }
-  var event_time = gol_event.time;
-  var time_string = event_time;
+  if (ay_number) {
+    ay = "A" + Array(o_number + 1).join("Y");
+  }
   var tweet = gol + " #" + opponent_code
-    + "\nown gol by #" + team_code + "'s " + gol_event.player + " in minute " + time_string;
-  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
-  console.log(tweet);
+    + "\nown gol by #" + team_code + "'s " + gol_event.player + " in minute " + gol_event.time
+    + "\n" + ay;
   postTweet(tweet);
-  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 
 var golTweet = function(team_code, gol_event) {
   var o_number = o.oCalc(team_code);
+  var gol = "GOL";
   if (o_number) {
-    var gol = "G" + Array(o_number + 1).join("O") + "L";
-  } else {
-    var gol = "GOL";
+    gol = "G" + Array(o_number + 1).join("O") + "L";
   }
-  var event_time = gol_event.time;
-  var time_string = event_time;
-  var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + time_string;
-  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
-  console.log(tweet);
+  var tweet = gol + " #" + team_code + "\nby " + gol_event.player + " in minute " + gol_event.time;
   postTweet(tweet);
-  console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 };
 
 if (!isProduction) {
