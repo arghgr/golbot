@@ -50,11 +50,6 @@ var scrapeCurrent = function(file, callback) {
     } else {
       console.log("no matches in progress");
     }
-    runScraper({
-      file: file,
-      url: "http://worldcup.sfg.io/matches/current",
-      parseCallback: parseMatches
-    });
     if (callback) { callback(); }
   };
 
@@ -80,6 +75,12 @@ var scrapeCurrent = function(file, callback) {
       }
     }
   };
+
+  runScraper({
+    file: file,
+    url: "http://worldcup.sfg.io/matches/current",
+    parseCallback: parseMatches
+  });
 };
 
 var checkForShootout = function(current, last) {
