@@ -23,12 +23,6 @@ function Match(matchData) {
 
 var scrapeCurrent = function(file, callback) {
   var matchesData = null;
-  runScraper({
-    file: file,
-    url: "http://worldcup.sfg.io/matches/current",
-    parseCallback: parseMatches
-  });
-
   var parseMatches = function(matchesData) {
     if (matchesData.length > 0) {
       matchesData.forEach(function(matchData) {
@@ -56,6 +50,11 @@ var scrapeCurrent = function(file, callback) {
     } else {
       console.log("no matches in progress");
     }
+    runScraper({
+      file: file,
+      url: "http://worldcup.sfg.io/matches/current",
+      parseCallback: parseMatches
+    });
     if (callback) { callback(); }
   };
 

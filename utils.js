@@ -3,8 +3,7 @@ var request = require("request");
 var runScraper = function({
   file: file,
   url: url,
-  parseCallback: parseCallback,
-  endCallback: endCallback
+  parseCallback: parseCallback
 } = { file: null, url: null, parseCallback: null }) {
   try {
     var parseData = function(data) {
@@ -38,6 +37,7 @@ var runScraper = function({
         if (err) throw "request - " + err;
         var parsedData = parseData(data);
         if (parseCallback) parseCallback(parsedData);
+
       });
     }
   } catch (error) {
