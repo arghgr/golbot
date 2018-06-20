@@ -61,7 +61,7 @@ var getMatches = function(file = null) {
         if (matchesData[i].datetime.length == 20 || matchesData[i].datetime.length == 29) {
           var matchDate = matchesData[i].datetime.substr(0,10);
           var matchHour = parseInt(matchesData[i].datetime.substr(11,13), 10);
-          var matchEnd = matchHour + 3; // Assumes games are 3 hours max
+          var matchEnd = matchHour + 2; // Assumes games are 2 hours max
           if (d.date == matchDate) {
             if (d.hour >= matchHour && d.hour < matchEnd) {
               if (!scraper) {

@@ -24,7 +24,7 @@ function Match(matchData) {
 var scrapeCurrent = function(file, callback) {
   var parseMatches = function(matchesData) {
     if (!matchesData || !_.isArray(matchesData) || !_.isObject(matchesData[0])) {
-      console.error("parseMatches: matchesData not an array of objects -", matchesData);
+      if (!isProduction) console.error("parseMatches: matchesData not an array of objects -", matchesData);
     } else if (matchesData.length > 0) {
       matchesData.forEach(function(matchData) {
         var matchExists = null;
