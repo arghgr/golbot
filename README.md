@@ -1,7 +1,7 @@
 @worldcupgolbot
 ======
 
-A Twitter bot that tweets the word "GOL", with varying numbers of Os, whenever a goal is scored in the 2014 FIFA World Cup. Inquiries can be directed @[arghgr](https://twitter.com/arghgr).
+A Twitter bot that tweets the word "GOL", with varying numbers of Os, whenever a goal is scored in the FIFA World Cup. Inquiries can be directed @[arghgr](https://twitter.com/arghgr).
 
 Much thanks to:
 * http://worldcup.sfg.io/
