@@ -34,7 +34,7 @@ var getMatches = function(file = null) {
     var date = datetime.toJSON().substr(0,10);
     var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - (isProduction ? 0 : 3);  // My servers are behind the API I'm scraping by 3 hours
     if (hour < 0) { hour += 24; }
-    console.log("current: " + date + " " + hour + "h");
+    if (!isProduction) console.log("current: " + date + " " + hour + "h");
     if (matchesData.length > 0) {
       var doScrape = false;
       for (i = 0; i < matchesData.length; i++) {
@@ -94,7 +94,7 @@ var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCT
 
 if (isProduction == true) {
   // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
-  var scoreCheck_freq = 1000 * 20; // Scrape every twenty seconds
+  var scoreCheck_freq = 1000 * 35; // Scrape every 35 seconds
   var match_length = 1000 * 60 * 60 * 2.5; // Keep scraper running for 2.5 hours
   var ping_interval = 1000 * 60; // Check time every minute
 
