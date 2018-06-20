@@ -22,15 +22,16 @@ function Match(matchData) {
 }
 
 var scrapeCurrent = function(file, callback) {
-  var matchesData = null;
   var parseMatches = function(matchesData) {
-    if (matchesData.length > 0) {
+    if (!matchesData || !_.isArray(matchesData) || !_.isObject(matchesData[0])) {
+      console.error("parseMatches: matchesData not an array of objects -", matchesData);
+    } else if (matchesData.length > 0) {
       matchesData.forEach(function(matchData) {
         var matchExists = null;
         for (i = 0; i < matches.length; i++) {
           if (matchData.fifa_id == matches[i].fifa_id) {
             matchExists = i;
-            // if (!isProduction) console.log("\nfound fifa_id " + matchData.fifa_id + " in matches[" + matchExists + "]");
+            if (!isProduction) console.log("\nfound fifa_id " + matchData.fifa_id + " in matches[" + matchExists + "]");
             break;
           }
         }
@@ -40,7 +41,7 @@ var scrapeCurrent = function(file, callback) {
           matches.push(match);
           parseData(match);
         } else {
-          // if (!isProduction) console.log("updating matches[" + matchExists + "], which is match #" + matchData.fifa_id);
+          if (!isProduction) console.log("updating matches[" + matchExists + "], which is match #" + matchData.fifa_id);
           var match = matches[matchExists];
           match.lastMatchData = match.currentMatchData;
           match.currentMatchData = matchData;
@@ -75,7 +76,7 @@ var scrapeCurrent = function(file, callback) {
           checkForShootout(currentMatchData, lastMatchData);
         }
       } else {
-        console.log("no lastMatchData for #" + currentMatchData.fifa_id);
+        if (!isProduction) console.log("no lastMatchData for #" + currentMatchData.fifa_id);
       }
     }
   };
@@ -142,7 +143,7 @@ var parseGol = function(ev, match, team) {
     var team = match.away_team;
     var opponent = match.home_team;
   } else {
-    console.log("no team specified in parseGol");
+    console.error("parseGol error: no team specified");
   }
   var type = ev.type_of_event;
   if (type != "goal-own") {
@@ -180,7 +181,7 @@ if (!isProduction) {
   // RUN WITH TEST FILES:
   // runTestFiles();
   // runCustomTestFiles();
-  // scrapeCurrent(testFile_y);
+  // scrapeCurrent(testFile_c);
 
   // RUN WITH TEST SCRAPER:
   // setInterval(scrapeCurrent, 5000);

@@ -7,6 +7,8 @@ var _ = require("underscore");
 var scorefetcher = require("./scorefetcher");
 var runScraper = require("./utils").runScraper;
 
+var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCTION) : false;
+
 // MATCH CHECKER
 // Every hour, checks whether a match is in progress
 // If match is in progress, runs score fetcher every 10 seconds for 2.5 hours
@@ -28,25 +30,43 @@ var endScraper = function() {
   }, match_length);
 };
 
+var parseDate = function(dt) {
+  var minutes = dt.getUTCMinutes().toString().padStart(2,"0");
+  var seconds = dt.getUTCSeconds().toString().padStart(2,"0");
+  var date = [
+    dt.getUTCFullYear(),
+    (dt.getUTCMonth() + 1).toString().padStart(2,"0"), // zero-indeeeeeeeexed
+    dt.getUTCDate().toString().padStart(2,"0")
+  ].join("-");
+  var hour = dt.getUTCHours();
+  var dateString = date + " " + hour + "h " + minutes + "m " + seconds + "s";
+  return {
+    minutes: minutes,
+    seconds: seconds,
+    date: date,
+    hour: hour,
+    dateString: dateString
+  }
+}
+
 var getMatches = function(file = null) {
   var checkMatchTimes = function(matchesData) {
-    var datetime = new Date();
-    var date = datetime.toJSON().substr(0,10);
-    var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - (isProduction ? 0 : 3);  // My servers are behind the API I'm scraping by 3 hours
-    if (hour < 0) { hour += 24; }
-    if (!isProduction) console.log("current: " + date + " " + hour + "h");
-    if (matchesData.length > 0) {
+    var d = parseDate(new Date());
+    if (!isProduction) console.log("current: " + d.date + " " + d.hour + "h");
+    if (!matchesData || !_.isArray(matchesData) || !_.isObject(matchesData[0])) {
+      console.error("checkMatchTimes: matchesData not an array of objects -", matchesData);
+    } else if (matchesData.length > 0) {
       var doScrape = false;
       for (i = 0; i < matchesData.length; i++) {
         if (matchesData[i].datetime.length == 20 || matchesData[i].datetime.length == 29) {
           var matchDate = matchesData[i].datetime.substr(0,10);
           var matchHour = parseInt(matchesData[i].datetime.substr(11,13), 10);
-          if (!isProduction) console.log("match at: " + matchDate + " " + matchHour + "h");
           var matchEnd = matchHour + 3; // Assumes games are 3 hours max
-          if (date == matchDate) {
-            if (hour >= matchHour && hour < matchEnd) {
+          if (d.date == matchDate) {
+            if (d.hour >= matchHour && d.hour < matchEnd) {
               if (!scraper) {
-                console.log("now: " + date + " " + hour + "h");
+                console.log("match at: " + matchDate + " " + matchHour + "h");
+                console.log("now: " + d.date + " " + d.hour + "h");
                 console.log("GAME TIME");
               }
               doScrape = true;
@@ -60,8 +80,6 @@ var getMatches = function(file = null) {
         startScraper();
         endScraper();
       }
-    } else {
-      console.log("matchesData is empty");
     }
   };
   runScraper({
@@ -72,17 +90,10 @@ var getMatches = function(file = null) {
 };
 
 var checkIfMatch = function(file, scrapeStart = 55, scrapeEnd = 10) {
-  var datetime = new Date();
-  var minutes = datetime.getMinutes();
-  var seconds = datetime.getSeconds();
-  var date = datetime.toJSON().substr(0,10);
-  var hour = (parseInt(datetime.toJSON().substr(11,13), 10)) - 3;
-  if (!isProduction) hour = hour + 3;
-  var dateString = date + " " + hour + "h " + minutes + "m " + seconds + "s";
-  if (hour < 0) { hour += 24; }
+  var d = parseDate(new Date());
   // Checks for matches in the last five minutes and first ten minutes of every hour
-  if (!isProduction) console.log("now: " + dateString);
-  if ((minutes >= scrapeStart || minutes <= scrapeEnd) && (!scraper)) {
+  if (!isProduction) console.log("checkIfMatch now: " + d.dateString);
+  if ((d.minutes >= scrapeStart || d.minutes <= scrapeEnd) && (!scraper)) {
     getMatches(file);
   }
 };
@@ -90,15 +101,13 @@ var checkIfMatch = function(file, scrapeStart = 55, scrapeEnd = 10) {
 var testFile1 = path.join(__dirname + '/test_files/examplex_currentx.json');
 var testFile2 = path.join(__dirname + '/test_files/examplex_currenty.json');
 
-var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCTION) : false;
-
 if (isProduction == true) {
   // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
   var scoreCheck_freq = 1000 * 35; // Scrape every 35 seconds
   var match_length = 1000 * 60 * 60 * 2.5; // Keep scraper running for 2.5 hours
   var ping_interval = 1000 * 60; // Check time every minute
 
-  console.log("timestamp: " + new Date());
+  console.log("timestamp: " + new Date().toUTCString());
   console.log("isProduction? " + isProduction);
   console.log("scoreCheck_freq? " + scoreCheck_freq);
   console.log("match_length? " + match_length);
@@ -108,11 +117,11 @@ if (isProduction == true) {
   }, ping_interval);
 } else if (isProduction == false) {
   // RUN WITH TEST DATA AND SCRAPE SPEEDS
-  var scoreCheck_freq = 1000 * 20;
+  var scoreCheck_freq = 1000 * 5;
   var match_length = 1000 * 60 * 10;
   var ping_interval = 1000 * 10;
 
-  console.log("timestamp: " + new Date());
+  console.log("timestamp: " + new Date().toUTCString());
   console.log("isProduction? " + isProduction);
   console.log("scoreCheck_freq? " + scoreCheck_freq);
   console.log("match_length? " + match_length);
