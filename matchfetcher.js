@@ -104,7 +104,7 @@ var testFile2 = path.join(__dirname + '/test_files/examplex_currenty.json');
 if (isProduction == true) {
   // RUN WITH PRODUCTION DATA AND SCRAPE SPEEDS
   var scoreCheck_freq = 1000 * 35; // Scrape every 35 seconds
-  var match_length = 1000 * 60 * 60 * 2.5; // Keep scraper running for 2.5 hours
+  var match_length = 1000 * 60 * 60 * 2; // Keep scraper running for 2 hours
   var ping_interval = 1000 * 60; // Check time every minute
 
   console.log("timestamp: " + new Date().toUTCString());
