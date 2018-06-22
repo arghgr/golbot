@@ -29,11 +29,9 @@ var runScraper = function({
     if (file) {
       try {
         if (!isProduction) console.log("runScraper file: ", file);
-        fs.readFileSync(file, { encoding: "utf-8" }, function(err, data) {
+        fs.readFile(file, { encoding: "utf-8" }, function(err, data) {
           if (err) throw "readFile - " + err;
-          console.log("file parsedData: ", parsedData);
           parsedData = parseData(data);
-          if (parseCallback) parseCallback(parsedData);
         });
       } catch (e) {
         console.error("readFile e: ", e);
