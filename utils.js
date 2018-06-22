@@ -21,8 +21,8 @@ var runScraper = function({
         }
         parsedData = JSON.parse(parsedData);
         if (parseCallback) parseCallback(parsedData);
-      } catch (e) {
-        console.error("parseData e: ", e);
+      } catch (e_parseData) {
+        console.error("parseData error: ", e_parseData);
         if (parseCallback) parseCallback(parsedData);
       }
     }
@@ -30,14 +30,18 @@ var runScraper = function({
       try {
         if (!isProduction) console.log("runScraper file: ", file);
         fs.readFile(file, { encoding: "utf-8" }, function(err, data) {
-          if (err) throw "readFile - " + err;
-          parsedData = parseData(data);
+          try {
+            if (err) throw err;
+            parseData(data);
+          } catch (e_readFile) {
+            console.error("readFile error: ", e_readFile);
+            if (parseCallback) parseCallback(parsedData);
+          }
         });
-      } catch (e) {
-        console.error("readFile e: ", e);
+      } catch (e_file) {
+        console.error("file error: ", e_file);
         if (parseCallback) parseCallback(parsedData);
       }
-
     } else if (url) {
       try {
         if (!isProduction) console.log("runScraper url: ", url);
@@ -48,16 +52,22 @@ var runScraper = function({
             "Content-Type": "application/json"
           }
         }, function(err, response, data){
-          if (err) throw "request - " + err;
-          parsedData = parseData(data);
+          try {
+            if (err) throw err;
+            parseData(data);
+          } catch (e_request) {
+            console.error("request error: ", e_request);
+            if (parseCallback) parseCallback(parsedData);
+          }
         });
-      } catch (e) {
-        console.error("request e: ", e);
+      } catch (e_url) {
+        console.error("url error: ", e_url);
         if (parseCallback) parseCallback(parsedData);
       }
     }
   } catch (error) {
     console.error("runScraper error: ", error);
+    if (parseCallback) parseCallback(parsedData);
   }
 }
 

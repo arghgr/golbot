@@ -21,7 +21,7 @@ function Match(matchData) {
   this.lastGolEvent_away = null;
 }
 
-var scrapeCurrent = function(file) {
+var scrapeCurrent = function(file, callback) {
   var parseMatches = function(matchesData) {
     if (!matchesData || !_.isArray(matchesData) || !_.isObject(matchesData[0])) {
       if (!isProduction) console.error("parseMatches: matchesData not an array of objects -", matchesData);
@@ -39,21 +39,22 @@ var scrapeCurrent = function(file) {
           console.log("\nadded match #" + matchData.fifa_id + " to matches");
           var match = new Match(matchData);
           matches.push(match);
-          parseData(match);
+          parseMatchData(match);
         } else {
           if (!isProduction) console.log("updating matches[" + matchExists + "], which is match #" + matchData.fifa_id);
           var match = matches[matchExists];
           match.lastMatchData = match.currentMatchData;
           match.currentMatchData = matchData;
-          parseData(match);
+          parseMatchData(match);
         }
       });
     } else {
       if (!isProduction) console.log("no matches in progress");
     }
+    if (callback) callback();
   };
 
-  var parseData = function(match) {
+  var parseMatchData = function(match) {
     var currentMatchData = match.currentMatchData;
     var lastMatchData = match.lastMatchData;
 
@@ -157,18 +158,23 @@ var testFile_x = path.join(__dirname + '/test_files/example9_today4.json');
 var testFile_y = path.join(__dirname + '/test_files/example9_today5.json');
 var testFile_z = path.join(__dirname + '/test_files/example9_today5.json');
 var runTestFiles = function() {
-  scrapeCurrent(testFile_x);
-  scrapeCurrent(testFile_y);
-  scrapeCurrent(testFile_z);
+  scrapeCurrent(testFile_x, function() {
+    scrapeCurrent(testFile_y, function() {
+      scrapeCurrent(testFile_z);
+    });
+  });
 };
 
-var testFile_a = path.join(__dirname + '/test_files/20180622todayCRCvsBRA1.json');
-var testFile_b = path.join(__dirname + '/test_files/20180622todayCRCvsBRA2.json');
-var testFile_c = path.join(__dirname + '/test_files/20180622todayCRCvsBRA3.json');
+var testFile_a = path.join(__dirname + '/test_files/20180622todaySRBvsSUI4.json');
+var testFile_b = path.join(__dirname + '/test_files/20180622todaySRBvsSUI5.json');
+var testFile_c = path.join(__dirname + '/test_files/20180622todaySRBvsSUI5.json');
 var runCustomTestFiles = function() {
-  scrapeCurrent(testFile_a);
-  scrapeCurrent(testFile_b);
-  scrapeCurrent(testFile_c);
+  scrapeCurrent(testFile_a, function() {
+    scrapeCurrent(testFile_b, function() {
+      scrapeCurrent(testFile_c);
+    });
+  });
+
 };
 
 var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCTION) : false;
