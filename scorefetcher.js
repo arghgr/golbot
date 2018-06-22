@@ -82,7 +82,8 @@ var scrapeCurrent = function(file) {
 
   runScraper({
     file: file,
-    url: "http://worldcup.sfg.io/matches/current",
+    url: "http://worldcup.sfg.io/matches/today",
+    // matches/current clears out immediately after game
     parseCallback: parseMatches
   });
 };
