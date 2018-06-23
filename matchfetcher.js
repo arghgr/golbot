@@ -52,7 +52,7 @@ var parseDate = function(dt) {
 var getMatches = function(file = null) {
   var checkMatchTimes = function(matchesData) {
     var d = parseDate(new Date());
-    if (!isProduction) console.log("current: " + d.date + " " + d.hour + "h");
+    if (!isProduction) console.log("current: " + d.date + " " + d.hour + "h " + d.minutes + "m");
     if (!matchesData || !_.isArray(matchesData) || !_.isObject(matchesData[0])) {
       console.error("checkMatchTimes: matchesData not an array of objects -", matchesData);
     } else if (matchesData.length > 0) {
@@ -65,8 +65,8 @@ var getMatches = function(file = null) {
           if (d.date == matchDate) {
             if (d.hour >= matchHour && d.hour < matchEnd) {
               if (!scraper) {
-                console.log("match at: " + matchDate + " " + matchHour + "h");
-                console.log("now: " + d.date + " " + d.hour + "h");
+                console.log("\nmatch at: " + matchDate + " " + matchHour + "h");
+                console.log("now: " + d.date + " " + d.hour + "h " + d.minutes + "m");
                 console.log("GAME TIME");
               }
               doScrape = true;
