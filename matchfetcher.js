@@ -14,6 +14,7 @@ var isProduction = process.env.IS_PRODUCTION ? JSON.parse(process.env.IS_PRODUCT
 // If match is in progress, runs score fetcher every 10 seconds for 2.5 hours
 
 var scraper = null;
+var scrapeStarted = false;
 
 var startScraper = function() {
   console.log("*********** SCRAPING ***********");
@@ -49,14 +50,14 @@ var parseDate = function(dt) {
   }
 }
 
-var getMatches = function(file = null) {
+var getMatches = function(file = null, scrapeOnStart = false) {
   var checkMatchTimes = function(matchesData) {
     var d = parseDate(new Date());
     if (!isProduction) console.log("current: " + d.date + " " + d.hour + "h " + d.minutes + "m");
     if (!matchesData || !_.isArray(matchesData) || !_.isObject(matchesData[0])) {
       console.error("checkMatchTimes: matchesData not an array of objects -", matchesData);
     } else if (matchesData.length > 0) {
-      var doScrape = false;
+      var doScrape = scrapeOnStart;
       for (i = 0; i < matchesData.length; i++) {
         if (matchesData[i].datetime.length == 20 || matchesData[i].datetime.length == 29) {
           var matchDate = matchesData[i].datetime.substr(0,10);
@@ -75,8 +76,7 @@ var getMatches = function(file = null) {
           }
         }
       }
-      if (doScrape) {
-        if (scraper) { clearInterval(scraper); }
+      if (doScrape && !scraper) {
         startScraper();
         endScraper();
       }
@@ -89,11 +89,16 @@ var getMatches = function(file = null) {
   });
 };
 
-var checkIfMatch = function(file, scrapeStart = 55, scrapeEnd = 10) {
+var checkIfMatch = function(file, scrapeOnStart = false, scrapeStart = 55, scrapeEnd = 10) {
   var d = parseDate(new Date());
-  // Checks for matches in the last five minutes and first ten minutes of every hour
-  if (!isProduction) console.log("checkIfMatch now: " + d.dateString);
-  if ((d.minutes >= scrapeStart || d.minutes <= scrapeEnd) && (!scraper)) {
+  if (scraper) {
+    // Scraper is already running
+  } else if (scrapeOnStart && !scrapeStarted) {
+    // Start scraper immediately
+    scrapeStarted = true;
+    getMatches(file, scrapeOnStart);
+  } else if (d.minutes >= scrapeStart || d.minutes <= scrapeEnd) {
+    // Checks for matches in the last five minutes and first ten minutes of every hour
     getMatches(file);
   }
 };
@@ -117,9 +122,9 @@ if (isProduction == true) {
   }, ping_interval);
 } else if (isProduction == false) {
   // RUN WITH TEST DATA AND SCRAPE SPEEDS
-  var scoreCheck_freq = 1000 * 35;
-  var match_length = 1000 * 60 * 10;
-  var ping_interval = 1000 * 10;
+  var scoreCheck_freq = 1000 * 35; // 35 seconds
+  var match_length = 1000 * 60 * 2; // 2 minutes
+  var ping_interval = 1000 * 10; // 10 seconds
 
   console.log("timestamp: " + new Date().toUTCString());
   console.log("isProduction? " + isProduction);
@@ -128,7 +133,7 @@ if (isProduction == true) {
   console.log("ping_interval? " + ping_interval);
   // getMatches(testFile1);
   var test = setInterval(function() {
-    checkIfMatch(null, scrapeStart = 0, scrapeEnd = 0);
+    checkIfMatch(null, true);
   }, ping_interval);
 } else {
   console.log("no isProduction");
