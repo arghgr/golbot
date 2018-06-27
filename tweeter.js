@@ -66,7 +66,7 @@ var ownGolTweet = function(team_code, opponent_code, gol_event) {
     gol = "G" + Array(o_number + 1).join("O") + "L";
   }
   if (ay_number) {
-    ay = "A" + Array(o_number + 1).join("Y");
+    ay = "A" + Array(ay_number + 1).join("Y");
   }
   var tweet = gol + " #" + opponent_code
     + "\nown gol by #" + team_code + "'s " + gol_event.player + " in minute " + gol_event.time
@@ -97,6 +97,12 @@ if (!isProduction) {
   //   type_of_event: "goal-own",
   //   player: "Oghenekaro ETEBO",
   //   time: "32'"
+  // });
+  // ownGolTweet("MEX", "SWE", {
+  //   id: 761,
+  //   type_of_event: "goal-own",
+  //   player: "Edson ALVAREZ",
+  //   time: "74'"
   // });
 }
 
