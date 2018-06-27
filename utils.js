@@ -23,7 +23,7 @@ var runScraper = function({
         if (parseCallback) parseCallback(parsedData);
       } catch (e_parseData) {
         console.error("parseData error: ", e_parseData);
-        if (parseCallback) parseCallback(parsedData);
+        if (parseCallback) parseCallback(parsedData, e_parseData);
       }
     }
     if (file) {
@@ -35,12 +35,12 @@ var runScraper = function({
             parseData(data);
           } catch (e_readFile) {
             console.error("readFile error: ", e_readFile);
-            if (parseCallback) parseCallback(parsedData);
+            if (parseCallback) parseCallback(parsedData, e_readFile);
           }
         });
       } catch (e_file) {
         console.error("file error: ", e_file);
-        if (parseCallback) parseCallback(parsedData);
+        if (parseCallback) parseCallback(parsedData, e_file);
       }
     } else if (url) {
       try {
@@ -57,17 +57,17 @@ var runScraper = function({
             parseData(data);
           } catch (e_request) {
             console.error("request error: ", e_request);
-            if (parseCallback) parseCallback(parsedData);
+            if (parseCallback) parseCallback(parsedData, e_request);
           }
         });
       } catch (e_url) {
         console.error("url error: ", e_url);
-        if (parseCallback) parseCallback(parsedData);
+        if (parseCallback) parseCallback(parsedData, e_url);
       }
     }
   } catch (error) {
     console.error("runScraper error: ", error);
-    if (parseCallback) parseCallback(parsedData);
+    if (parseCallback) parseCallback(parsedData, error);
   }
 }
 

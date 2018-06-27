@@ -51,10 +51,10 @@ var parseDate = function(dt) {
 }
 
 var getMatches = function(file = null, scrapeOnStart = false) {
-  var checkMatchTimes = function(matchesData) {
+  var checkMatchTimes = function(matchesData, error) {
     var d = parseDate(new Date());
     if (!isProduction) console.log("current: " + d.date + " " + d.hour + "h " + d.minutes + "m");
-    if (!matchesData || !_.isArray(matchesData) || !_.isObject(matchesData[0])) {
+    if (error || !matchesData || !_.isArray(matchesData) || !_.isObject(matchesData[0])) {
       console.error("checkMatchTimes: matchesData not an array of objects -", matchesData);
     } else if (matchesData.length > 0) {
       var doScrape = scrapeOnStart;

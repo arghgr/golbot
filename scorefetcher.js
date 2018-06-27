@@ -22,8 +22,8 @@ function Match(matchData) {
 }
 
 var scrapeCurrent = function(file, callback) {
-  var parseMatches = function(matchesData) {
-    if (!matchesData || !_.isArray(matchesData) || !_.isObject(matchesData[0])) {
+  var parseMatches = function(matchesData, error = null) {
+    if (error || !matchesData || !_.isArray(matchesData) || !_.isObject(matchesData[0])) {
       if (!isProduction) console.error("parseMatches: matchesData not an array of objects -", matchesData);
     } else if (matchesData.length > 0) {
       matchesData.forEach(function(matchData) {
