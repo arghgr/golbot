@@ -94,11 +94,15 @@ var checkForShootout = function(current, last) {
   var lastStatus = last.status;
   var home = current.home_team;
   var away = current.away_team;
-  if (currentStatus == "completed" & lastStatus == "in progress") {
+  if (currentStatus == "completed" && lastStatus == "in progress") {
     if (home.penalties && away.penalties) {
       if (home.penalties > away.penalties) {
+        console.log("home penal win: ", home);
+        console.log("away penal loss: ", away);
         tweeter.penaltyTweet(home.code, home.penalties);
       } else if (home.penalties < away.penalties) {
+        console.log("away penal win: ", away);
+        console.log("home penal loss: ", home);
         tweeter.penaltyTweet(away.code, away.penalties);
       } else {
         console.log("there was a penalty shootout tie?");
